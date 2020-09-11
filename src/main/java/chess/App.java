@@ -12,9 +12,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Map;
 
+import main.java.datastructureproject.init.*;
+
+import java.util.*;
+
 public class App {
 
     public static void main(String[] args) throws Exception {
+
         Map<String, String> env = System.getenv();
         String token = null;
         boolean isLichess = false;
@@ -35,7 +40,7 @@ public class App {
         You need to place your bot implementation to the variable below.
         Make sure it implements the interface ChessBot, and don't change the variable name!
         */
-        ChessBot bot = new TestBot(); // Your bot here!
+        ChessBot bot = new Bot(); // Your bot here!
 
         if (isLichess) {
             if (token == null) {
@@ -62,5 +67,26 @@ public class App {
                 }
             }
         }
+
+        // Just random tests done on the fly to see if everything works as intended so ignore these for now
+        /*Pieces y = new Pieces("k");
+        
+       
+        String x = y.getPiece(y);
+        System.out.println(x);
+        Board a = new Board();
+        String[][] b = a.returnBoard();
+        
+        for (int i = 0; i < 8; i++) {
+            System.out.println(Arrays.toString(b[i]));
+        }
+        Moves moves = new Moves(a);
+        System.out.println(moves.knightMoves(0, 1, new Pieces("N")));
+        System.out.println(b[0][1]);
+        String str = "0021";
+        System.out.println(moves.convertToUCI(str));
+        String usc = moves.convertToUCI(str);
+        System.out.println(moves.convertBackFromUCI(usc));*/
+        
     }
 }
