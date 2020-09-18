@@ -7,3 +7,5 @@
 [Week 1 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%201%20report.md)
 
 [Week 2 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%202%20report.md)
+
+[Week 3 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%203%20report.md)
