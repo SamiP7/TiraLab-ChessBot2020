@@ -21,26 +21,31 @@ public class Bot implements ChessBot {
     @Override
     public String nextMove(GameState gs) {
         parseLatestMove(gs);
-        String myMove;
-        
-            //Generate a chesslib move based on the position
-            myMove = this.getMove();
+        String myMove;    
+        myMove = this.getMove(gs);
             
-            if (myMove != null) {
-                //Transform the move into a UCI string representation
-                return myMove.toString();
-            }
-            
-        
-        
-        
+        if (myMove != null) {
+            //Transform the move into a UCI string representation
+            return myMove.toString();
+        }
+
         return null;
     }
 
-    public String getMove() {
-        Moves move = new Moves(b);
-        ArrayList<String> moves = move.allMovesForBot();
-        System.out.println(moves);
+    public String getMove(GameState gs) {
+        /*for (int i = 0; i < 8; i++) {
+            System.out.println("?? " + Arrays.toString(b.returnBoard()[i]));
+        }*/
+        Moves move = new Moves(b, gs);
+        
+        ArrayList<String> moves = move.allMovesForBot(gs.playing);
+        /*if (!gs.moves.isEmpty()) {
+            System.out.println(gs.getLatestMove() + " viimeisin liike");
+        } 
+        //commented out of parts are used for debugging so ignore them
+        System.out.println("Mahdolliset liikkeet: " + moves);*/
+        
+        
         
         //Returns null if no legal moves available, else returns a randomly selected legal move.
         if (moves.size() > 0) {
@@ -61,7 +66,7 @@ public class Bot implements ChessBot {
                 String endingString = moveString.substring(2, 4).toUpperCase();
                 String promoteString = moveString.length() > 4 ? moveString
                         .substring(4).toUpperCase() : "".toUpperCase();
-                this.setMove(startingString, endingString, promoteString);
+                this.setMove(startingString, endingString, promoteString, gs);
             });
         }
     }
@@ -72,10 +77,12 @@ public class Bot implements ChessBot {
      * @param promote if a pawn can be promoted(not yet implemented)
      */
 
-    public void setMove(String starting, String ending, String promote) {
-        Moves m = new Moves(b);
+    public void setMove(String starting, String ending, String promote, GameState gs) {
+        Moves m = new Moves(b, gs);
         String latestmove = starting + ending;
-
+        if (promote.length() > 0) {
+            latestmove += promote;
+        }
         this.b.doMove(m.convertBackFromUCI(latestmove));
     }
 }

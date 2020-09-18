@@ -4,7 +4,6 @@
 package chess;
 
 import chess.bot.ChessBot;
-import chess.bot.TestBot;
 import chess.connection.LichessAPI;
 import chess.model.Profile;
 import chess.connection.*;
@@ -66,7 +65,7 @@ public class App {
                     xb.run();
                 }
             }
-        }
+        } //*/
 
         // Just random tests done on the fly to see if everything works as intended so ignore these for now
         /*Pieces y = new Pieces("k");
@@ -81,12 +80,21 @@ public class App {
             System.out.println(Arrays.toString(b[i]));
         }
         Moves moves = new Moves(a);
-        System.out.println(moves.knightMoves(0, 1, new Pieces("N")));
-        System.out.println(b[0][1]);
-        String str = "0021";
-        System.out.println(moves.convertToUCI(str));
-        String usc = moves.convertToUCI(str);
-        System.out.println(moves.convertBackFromUCI(usc));*/
+        System.out.println(moves.bishopMoves(4, 3, new Pieces("b")));
+        System.out.println((b[7][3]));
+        /*String str = "f3h5";
+        System.out.println(moves.convertBackFromUCI(str));
+        String jotai = "x";
+        System.out.println(jotai.charAt(0));
+        String g = "e1h4";
+        String usc = moves.convertBackFromUCI(g);
+        System.out.println(usc + " usc");
+        System.out.println(b[7][4] + "  paikka");
+        /*a.doMove("0372");
+        for (int i = 0; i < 8; i++) {
+            System.out.println(Arrays.toString(a.returnBoard()[i]));
+        }
+        System.out.println(moves.isKingInCheck(a.returnBoard()));*/
         
     }
 }

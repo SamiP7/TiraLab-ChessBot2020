@@ -44,6 +44,6 @@ public class Pieces {
      * Returns the piece as a String so it can actually be read
      */
     public String toString() {
-        return type;
+        return this.type;
     }
 }
