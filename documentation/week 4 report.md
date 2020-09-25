@@ -4,7 +4,7 @@
 * A bit more testing for both regular- and special moves.
 * Time spent: about 9h of which many were running the bot to track down any possible errors.
 
-** Next week**
+**Next week**
 
 * Work on algorithms for the bot and make the current ones go to more depth so it can *plan ahead*.
 * Try to get the bot understand "favorable" board positions for its pieces so it tries to prioritize them.
