@@ -88,6 +88,7 @@ public class Board {
             } else {
                 board[Integer.valueOf(temp[2])][Integer.valueOf(temp[3])] = temp[4].toLowerCase();
                 board[Integer.valueOf(temp[0])][Integer.valueOf(temp[1])] = "";
+                return;
             }
             
         }

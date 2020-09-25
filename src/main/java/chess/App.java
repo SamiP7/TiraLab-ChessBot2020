@@ -10,10 +10,11 @@ import chess.connection.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Map;
-
+import chess.engine.*;
 import main.java.datastructureproject.init.*;
-
+import main.java.datastructureproject.algorithms.*;
 import java.util.*;
+import main.java.datastructureproject.algorithms.*;
 
 public class App {
 
@@ -68,19 +69,11 @@ public class App {
         } //*/
 
         // Just random tests done on the fly to see if everything works as intended so ignore these for now
-        /*Pieces y = new Pieces("k");
-        
-       
-        String x = y.getPiece(y);
-        System.out.println(x);
-        Board a = new Board();
+        /*Board a = new Board();
         String[][] b = a.returnBoard();
-        
         for (int i = 0; i < 8; i++) {
             System.out.println(Arrays.toString(b[i]));
         }
-        Moves moves = new Moves(a);
-        System.out.println(moves.bishopMoves(4, 3, new Pieces("b")));
         System.out.println((b[7][3]));
         /*String str = "f3h5";
         System.out.println(moves.convertBackFromUCI(str));

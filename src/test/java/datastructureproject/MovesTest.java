@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 import main.java.datastructureproject.init.*;
 import chess.engine.*;
 import jdk.jfr.Timestamp;
+import chess.model.Side;
 
 public class MovesTest {
     
@@ -65,7 +66,7 @@ public class MovesTest {
 
     @Test
     public void getKingPossibleWhenMiddleOfTheBoard() {
-        ArrayList<String> moves = m.kingMoves(4, 3, new Pieces("k"), b.returnBoard());
+        ArrayList<String> moves = m.kingMoves(4, 3, new Pieces("k"), b.returnBoard(), new String("white"));
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("d4c3"));
         ans.add(new String("d4d3"));
@@ -79,8 +80,8 @@ public class MovesTest {
     }
 
     @Test
-    public void allMovesForWhiteAtTheStart() {
-        ArrayList<String> moves = m.allMovesForBot(gs.playing);
+    public void allMovesForBlackAtTheStart() {
+        ArrayList<String> moves = m.allMovesForSide(gs.playing, b.returnBoard());
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("b8c6"));
         ans.add(new String("b8a6"));
@@ -103,6 +104,33 @@ public class MovesTest {
         ans.add(new String("h7h6"));
         ans.add(new String("h7h5"));
         
+        assertEquals(moves, ans);
+    }
+
+    @Test
+    public void allMovesForWhiteAtTheStart() {
+        ArrayList<String> moves = m.allMovesForSide(Side.WHITE, b.returnBoard());
+        ArrayList<String> ans = new ArrayList<>();
+        ans.add(new String("a2a3"));
+        ans.add(new String("a2a4"));
+        ans.add(new String("b2b4"));
+        ans.add(new String("b2b3"));
+        ans.add(new String("c2c3"));
+        ans.add(new String("c2c4"));
+        ans.add(new String("d2d3"));
+        ans.add(new String("d2d4"));
+        ans.add(new String("e2e3"));
+        ans.add(new String("e2e4"));
+        ans.add(new String("f2f3"));
+        ans.add(new String("f2f4"));
+        ans.add(new String("g2g3"));
+        ans.add(new String("g2g4"));
+        ans.add(new String("h2h3"));
+        ans.add(new String("h2h4"));
+        ans.add(new String("b1a3"));
+        ans.add(new String("b1c3"));
+        ans.add(new String("g1f3"));
+        ans.add(new String("g1h3"));
         assertEquals(moves, ans);
     }
 
@@ -147,6 +175,64 @@ public class MovesTest {
         String str = "A8B6";
         String test = m.convertBackFromUCI(str);
         assertEquals(test, "0021");
+    }
+
+    @Test
+    public void castlingTestWhiteKingSide() {
+        String[][] test = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                test[i][j] = b.returnBoard()[i][j];
+            }
+        }
+        test[7][4] = "";
+        test[7][5] = "r";
+        test[7][6] = "k";
+        test[7][7] = "";
+        b.returnBoard()[7][6] = "";
+        b.returnBoard()[7][5] = "";
+        b.doMove(m.convertBackFromUCI("e1g1"));
+        assertEquals(b.returnBoard(), test);
+    }
+
+    @Test
+    public void castlingTestWhiteQueenSide() {
+        String[][] test = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                test[i][j] = b.returnBoard()[i][j];
+            }
+        }
+        test[7][4] = "";
+        test[7][3] = "r";
+        test[7][2] = "k";
+        test[7][1] = "";
+        test[7][0] = "";
+        b.returnBoard()[7][3] = "";
+        b.returnBoard()[7][2] = "";
+        b.returnBoard()[7][1] = "";
+        b.doMove(m.convertBackFromUCI("e1c1"));
+        assertEquals(b.returnBoard(), test);
+    }
+
+    @Test
+    public void testEnPassant() {
+        String[][] test = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                test[i][j] = b.returnBoard()[i][j];
+            }
+        }
+        test[6][2] = "";
+        test[1][3] = "";
+        test[5][2] = "P";
+
+        b.returnBoard()[6][2] = "";
+        b.returnBoard()[1][3] = "";
+        b.returnBoard()[4][2] = "p";
+        b.returnBoard()[4][3] = "P";
+        b.doMove(m.convertBackFromUCI("d4c3"));
+        assertEquals(b.returnBoard(), test);
     }
 
     

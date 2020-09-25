@@ -28,7 +28,7 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @return all the moves that a knight can do
      */
     public ArrayList<String> knightMoves(int sI, int sJ, Pieces p, String[][] tboard) {
         ArrayList<String> moves = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @return all the moves that a queen can do
      */
 
     public ArrayList<String> queenMoves(int sI, int sJ, Pieces p, String[][] tboard) {
@@ -87,7 +87,7 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @return all the moves that a bishop can do
      */
     
     public ArrayList<String> bishopMoves(int sI, int sJ, Pieces p, String[][] tboard) {
@@ -174,7 +174,7 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @return all the moves that a rook can do
      */
     public ArrayList<String> rookMoves(int sI, int sJ, Pieces p, String[][] tboard) {
         ArrayList<String> moves = new ArrayList<>();
@@ -260,9 +260,10 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @param side which color the king is
+     * @return all the moves that a king can do
      */
-    public ArrayList<String> kingMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+    public ArrayList<String> kingMoves(int sI, int sJ, Pieces p, String[][] tboard, String side) {
         ArrayList<String> moves = new ArrayList<>();
         HashSet<String> movesTemp = new HashSet<>();
         ArrayList<String> convert = new ArrayList<>();
@@ -290,6 +291,30 @@ public class Moves {
         if (possibleMoves(sI, sJ - 1, p, tboard) >= 0) {
             movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ - 1)));
         }
+        String[][] temporary = new String[8][8];
+        String[][] temporary2 = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                temporary[i][j] = tboard[i][j];
+                temporary2[i][j] = tboard[i][j];
+            }
+        }
+        if (side.equals("white")) {
+            if (canKingCastleKingSide(side, temporary)) {
+                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ + 2)));
+            }
+            if (canKingCastleQueenSide(side, temporary2)) {
+                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ - 2)));
+            }
+        }
+        if (!side.equals("white")) {
+            if (canKingCastleKingSide(side, temporary)) {
+                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ + 2)));
+            }
+            if (canKingCastleQueenSide(side, temporary2)) {
+                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ - 2)));
+            }
+        }
         convert.addAll(movesTemp);
         for (String i : convert) {
             moves.add(convertToUCI(i));
@@ -302,7 +327,7 @@ public class Moves {
      * @param sJ starting horizontal
      * @param p piece value but mostly used to check color
      * @param tboard temporary board to test possibilities with
-     * @return
+     * @return all the moves that a pawn can do
      */
     public ArrayList<String> pawnMoves(int sI, int sJ, Pieces p, String[][] tboard) {
         ArrayList<String> moves = new ArrayList<>();
@@ -315,7 +340,14 @@ public class Moves {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 2) + String.valueOf(sJ)));
             }
             if (possibleMoves(sI + 1, sJ, p, tboard) == 0) {
-                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)));
+                if (sI + 1 == 7) {
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)) + new String("Q"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)) + new String("N"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)) + new String("B"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)) + new String("R"));
+                } else {
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ)));
+                }
             }
             if (possibleMoves(sI + 1, sJ + 1, p, tboard) == 1) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1)));
@@ -323,22 +355,29 @@ public class Moves {
             if (possibleMoves(sI + 1, sJ - 1, p, tboard) == 1) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ - 1)));
             }
-            /*if (enPassant()) {
+            if (enPassant()) {
                 String see = convertBackFromUCI(gs.getLatestMove());
                 String temp[] = see.split("");
                 if (possibleMoves(sI + 1, sJ + 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ + 1) {
-                    moves.add("en" + new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1)));
+                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1)));
                 }
                 if (possibleMoves(sI + 1, sJ - 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ - 1) {
-                    moves.add("en" + new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ - 1)));
+                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ - 1)));
                 }
-            }  */  
+            } 
         } else {
             if (sI == 6 && possibleMoves(sI - 2, sJ, p, tboard) == 0 && possibleMoves(sI - 1, sJ, p, tboard) == 0) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 2) + String.valueOf(sJ)));
             }
             if (possibleMoves(sI - 1, sJ, p, tboard) == 0) {
-                movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)));
+                if (sI - 1 == 0) {
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)) + new String("q"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)) + new String("n"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)) + new String("b"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)) + new String("r"));
+                } else {
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ)));
+                }
             }
             if (possibleMoves(sI - 1, sJ + 1, p, tboard) == 1) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ + 1)));
@@ -346,16 +385,16 @@ public class Moves {
             if (possibleMoves(sI - 1, sJ - 1, p, tboard) == 1) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 1)));
             }
-            /*if (enPassant()) {
+            if (enPassant()) {
                 String see = convertBackFromUCI(gs.getLatestMove());
                 String temp[] = see.split("");
                 if (possibleMoves(sI - 1, sJ + 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ + 1) {
-                    moves.add("en" + new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ + 1)));
+                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ + 1)));
                 }
                 if (possibleMoves(sI - 1, sJ - 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ - 1) {
-                    moves.add("en" + new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 1)));
+                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 1)));
                 }
-            } */
+            }
         }
         convert.addAll(movesTemp);
         for (String i : convert) {
@@ -465,7 +504,7 @@ public class Moves {
     /**
      * Converts an UCI strings to a string consisting inbetween values of 0-7 which the Board class can read
      * @param s given UCI snippet
-     * @return string consistint of 4 values inbetween 0-7
+     * @return string consisting of 4 values inbetween 0-7
      */
 
     public String convertBackFromUCI(String s) {
@@ -539,37 +578,38 @@ public class Moves {
         return finalReg;
     }
     /**
-     * Used to generate all the possible moves the bot can make.
-     * @param side which side is the bot playing
+     * Used to generate all the possible moves a side can make.
+     * @param side which side moves are generated
+     * @param tboard temporary board which can be used to generate future moves
      * @return possible moves
      */
-    public ArrayList<String> allMovesForBot(Side side) {
+    public ArrayList<String> allMovesForSide(Side side, String[][] tboard) {
         ArrayList<String> allMoves = new ArrayList<>();
         if (side == Side.WHITE) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (board[i][j].equals("p")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), board);
+                    if (tboard[i][j].equals("p")) {
+                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("b")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("b"), board);
+                    if (tboard[i][j].equals("b")) {
+                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("b"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("r")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("r"), board);
+                    if (tboard[i][j].equals("r")) {
+                        ArrayList<String> temp = rookMoves(i, j, new Pieces("r"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("n")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("n"), board);
+                    if (tboard[i][j].equals("n")) {
+                        ArrayList<String> temp = knightMoves(i, j, new Pieces("n"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), board);
+                    if (tboard[i][j].equals("q")) {
+                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("k")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), board);
+                    if (tboard[i][j].equals("k")) {
+                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
                         allMoves.addAll(temp);
                     }
                     
@@ -582,7 +622,7 @@ public class Moves {
                 String[][] testBoard = new String[8][8];
                 for (int j = 0; j < 8; j++) {
                     for (int k = 0; k < 8; k++) {
-                        testBoard[j][k] = board[j][k];
+                        testBoard[j][k] = tboard[j][k];
                     }
                 }
                 testBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = testBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
@@ -597,28 +637,28 @@ public class Moves {
         } else {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (board[i][j].equals("P")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), board);
+                    if (tboard[i][j].equals("P")) {
+                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("B")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("B"), board);
+                    if (tboard[i][j].equals("B")) {
+                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("B"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("R")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("R"), board);
+                    if (tboard[i][j].equals("R")) {
+                        ArrayList<String> temp = rookMoves(i, j, new Pieces("R"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("N")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("N"), board);
+                    if (tboard[i][j].equals("N")) {
+                        ArrayList<String> temp = knightMoves(i, j, new Pieces("N"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("Q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), board);
+                    if (tboard[i][j].equals("Q")) {
+                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (board[i][j].equals("K")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), board);
+                    if (tboard[i][j].equals("K")) {
+                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
                         allMoves.addAll(temp);
                     }
                 }
@@ -630,7 +670,7 @@ public class Moves {
                 String[][] testBoard = new String[8][8];
                 for (int j = 0; j < 8; j++) {
                     for (int k = 0; k < 8; k++) {
-                        testBoard[j][k] = board[j][k];
+                        testBoard[j][k] = tboard[j][k];
                     }
                 }
                 testBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = testBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
@@ -647,7 +687,7 @@ public class Moves {
     /**
      * Checks if the king is in check from the given board. Pretty much used for to check if king is check after a certain move
      *  to reduce the amount of possible moves.
-     * @param color bot's colour so it only check's all the possible moves that the opponent has
+     * @param color specifies the side so it checks the opposing side moves
      * @param tboard temporary board used so it doesn't affect the played one
      * @return false if the king is not in check after a certain move, true otherwise
      */
@@ -678,7 +718,7 @@ public class Moves {
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("K")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard);
+                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
                         allMoves.addAll(temp);
                     }
                     
@@ -720,7 +760,7 @@ public class Moves {
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("k")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard);
+                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
                         allMoves.addAll(temp);
                     }
                 }
@@ -742,7 +782,7 @@ public class Moves {
     }
 
     /**
-     * Not yet used but it's going to be used for checking if pawn can do an en passant move.
+     * Checks whether an en passant move can be made
      * @return true if move is technically possible, false otherwise
      */
     public boolean enPassant() {
@@ -759,6 +799,132 @@ public class Moves {
                     return true;
                 }
                 
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Used to check whether castling is possible by first checking if king has moved
+     * @param side which color the king is
+     * @return true if king has moved, false otherwise
+     */    
+    public boolean hasKingMoved(String side) {
+        if (side.equals("white")) {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("e") && temp[1].equals("1")) {
+                    return true;
+                }
+            }
+        } else {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("e") && temp[1].equals("8")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the rook on the king side has moved. Used for castling
+     * @param side color of the rook
+     * @return true if it has moved, false otherwise
+     */
+    public boolean hasRookMovedKingSide(String side) {
+        if (side.equals("white")) {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("a") && temp[1].equals("1")) {
+                    return true;
+                }
+            }
+        } else {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("a") && temp[1].equals("8")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the rook on the queen side has moved. Used for castling
+     * @param side color of the rook
+     * @return true if it has moved, false otherwise
+     */
+    public boolean hasRookMovedQueenSide(String side) {
+        if (side.equals("white")) {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("h") && temp[1].equals("1")) {
+                    return true;
+                }
+            }
+        } else {
+            for (String s : gs.moves) {
+                String[] temp = s.split("");
+                if (temp[0].equals("h") && temp[1].equals("8")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if all the conditions for castling are in order for king side
+     * @param side color of the king
+     * @param tboard temporary board on which we can place temporary kings to check that they not in check
+     * @return true if castling is possible, false otherwise
+     */
+    public boolean canKingCastleKingSide(String side, String[][] tboard) {
+        if (side.equals("white")) {
+            if (tboard[7][5].equals("") && tboard[7][6].equals("")) {
+                tboard[7][5] = "k";
+                tboard[7][6] = "k";
+                if (!hasRookMovedKingSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
+                    return true;
+                }
+            }
+        } else {
+            if (tboard[0][5].equals("") && tboard[0][6].equals("")) {
+                tboard[0][5] = "K";
+                tboard[0][6] = "K";
+                if (!hasRookMovedKingSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if all the conditions for castling are in order for queen side
+     * @param side color of the king
+     * @param tboard temporary board on which we can place temporary kings to check that they not in check
+     * @return true if castling is possible, false otherwise
+     */
+    public boolean canKingCastleQueenSide(String side, String[][] tboard) {
+        if (side.equals("white")) {
+            if (tboard[7][3].equals("") && tboard[7][2].equals("") && tboard[7][1].equals("")) {
+                tboard[7][3] = "k";
+                tboard[7][2] = "k";
+                if (!hasRookMovedQueenSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
+                    return true;
+                }
+            }
+        } else {
+            if (tboard[0][3].equals("") && tboard[0][2].equals("") && tboard[0][1].equals("")) {
+                tboard[0][3] = "K";
+                tboard[0][2] = "K";
+                if (!hasRookMovedQueenSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
+                    return true;
+                }
             }
         }
         return false;

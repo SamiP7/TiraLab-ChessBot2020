@@ -3,6 +3,7 @@ package main.java.datastructureproject.init;
 import chess.engine.*;
 import chess.bot.ChessBot;
 import java.util.*;
+import main.java.datastructureproject.algorithms.*;
 
 /**
  * This class is currently heavily influenced by the TestBot class which might change in the future
@@ -36,16 +37,20 @@ public class Bot implements ChessBot {
         /*for (int i = 0; i < 8; i++) {
             System.out.println("?? " + Arrays.toString(b.returnBoard()[i]));
         }*/
-        Moves move = new Moves(b, gs);
+        //Moves moves = new Moves(b, gs);
+        //ArrayList<String> moves = move.allMovesForSide(gs.playing, b.returnBoard());
+        MinMax bestMoves = new MinMax(b, gs);
+        ArrayList<String> moves = bestMoves.minmaxMove();
         
-        ArrayList<String> moves = move.allMovesForBot(gs.playing);
         /*if (!gs.moves.isEmpty()) {
             System.out.println(gs.getLatestMove() + " viimeisin liike");
         } 
-        //commented out of parts are used for debugging so ignore them
-        System.out.println("Mahdolliset liikkeet: " + moves);*/
-        
-        
+        //commented out parts are used for debugging so ignore them
+        //System.out.println("Mahdolliset liikkeet: " + moves);
+        String[][] a = b.returnBoard();
+        for (int i = 0; i < 8; i++) {
+            System.out.println(Arrays.toString(a[i]));
+        }*/
         
         //Returns null if no legal moves available, else returns a randomly selected legal move.
         if (moves.size() > 0) {
