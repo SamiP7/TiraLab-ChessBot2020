@@ -8,5 +8,5 @@
 
 * Work on algorithms for the bot and make the current ones go to more depth so it can *plan ahead*.
 * Try to get the bot understand "favorable" board positions for its pieces so it tries to prioritize them.
-* Possible start to work on some pruning, especially if minmaxing starts to go several turns ahead.
+* Possibly start to work on some pruning, especially if minmaxing starts to go several turns ahead.
 * Testing testing testing.
