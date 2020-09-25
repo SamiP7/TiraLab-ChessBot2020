@@ -21,6 +21,3 @@
 * These can be found after building the project (guide for that is found from the **early guide for running the bot**).
 * Jacoco can be found here *\build\reports\jacoco\test\html\jacoco-sessions.html*
 * Checkstyle from here *\build\reports\checkstyle\main.html*
-
-### Misc
-If the project doesn't build for you, make sure you are using Java 11 or later. If the problem persists, then I have no idea.
