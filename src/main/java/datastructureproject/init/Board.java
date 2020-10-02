@@ -43,7 +43,7 @@ public class Board {
      * @param move Given an 4 value string consisting of values inbetween 0-7, it uses the first 2 values as
      * a starting position and the latter ones as the destination
      */
-    public void doMove(String move) {
+    public void doMove(String move, String[][] board) {
         String[] temp = new String[5];
         temp = move.split("");
         if (board[Integer.valueOf(temp[0])][Integer.valueOf(temp[1])].equals("k") && Integer.valueOf(temp[1]) != Integer.valueOf(temp[3]) + 1

@@ -40,7 +40,8 @@ public class Bot implements ChessBot {
         //Moves moves = new Moves(b, gs);
         //ArrayList<String> moves = move.allMovesForSide(gs.playing, b.returnBoard());
         MinMax bestMoves = new MinMax(b, gs);
-        ArrayList<String> moves = bestMoves.minmaxMove();
+        ArrayList<String> moves = bestMoves.minMaxMove();
+        System.out.println(moves + " juuu hei");
         
         /*if (!gs.moves.isEmpty()) {
             System.out.println(gs.getLatestMove() + " viimeisin liike");
@@ -88,6 +89,6 @@ public class Bot implements ChessBot {
         if (promote.length() > 0) {
             latestmove += promote;
         }
-        this.b.doMove(m.convertBackFromUCI(latestmove));
+        this.b.doMove(m.convertBackFromUCI(latestmove), this.b.returnBoard());
     }
 }

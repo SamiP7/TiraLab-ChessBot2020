@@ -302,19 +302,24 @@ public class Moves {
         if (side.equals("white")) {
             if (canKingCastleKingSide(side, temporary)) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ + 2)));
+
             }
             if (canKingCastleQueenSide(side, temporary2)) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ - 2)));
+
             }
         }
         if (!side.equals("white")) {
             if (canKingCastleKingSide(side, temporary)) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ + 2)));
+
             }
             if (canKingCastleQueenSide(side, temporary2)) {
                 movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI) + String.valueOf(sJ - 2)));
+
             }
         }
+        
         convert.addAll(movesTemp);
         for (String i : convert) {
             moves.add(convertToUCI(i));
@@ -837,14 +842,14 @@ public class Moves {
         if (side.equals("white")) {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if (temp[0].equals("a") && temp[1].equals("1")) {
+                if ((temp[0].equals("a") && temp[1].equals("1")) || (temp[2].equals("a") && temp[3].equals("1"))) {
                     return true;
                 }
             }
         } else {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if (temp[0].equals("a") && temp[1].equals("8")) {
+                if ((temp[0].equals("a") && temp[1].equals("8")) || (temp[2].equals("a") && temp[3].equals("8"))) {
                     return true;
                 }
             }
@@ -861,14 +866,14 @@ public class Moves {
         if (side.equals("white")) {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if (temp[0].equals("h") && temp[1].equals("1")) {
+                if ((temp[0].equals("h") && temp[1].equals("1")) || (temp[0].equals("h") && temp[1].equals("1"))) {
                     return true;
                 }
             }
         } else {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if (temp[0].equals("h") && temp[1].equals("8")) {
+                if ((temp[0].equals("h") && temp[1].equals("8")) || (temp[0].equals("h") && temp[1].equals("8"))) {
                     return true;
                 }
             }
@@ -884,7 +889,7 @@ public class Moves {
      */
     public boolean canKingCastleKingSide(String side, String[][] tboard) {
         if (side.equals("white")) {
-            if (tboard[7][5].equals("") && tboard[7][6].equals("")) {
+            if (tboard[7][5].equals("") && tboard[7][6].equals("") && tboard[7][4].equals("k") && tboard[7][7].equals("r")) {
                 tboard[7][5] = "k";
                 tboard[7][6] = "k";
                 if (!hasRookMovedKingSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
@@ -892,7 +897,7 @@ public class Moves {
                 }
             }
         } else {
-            if (tboard[0][5].equals("") && tboard[0][6].equals("")) {
+            if (tboard[0][5].equals("") && tboard[0][6].equals("") && tboard[0][4].equals("K") && tboard[0][7].equals("R")) {
                 tboard[0][5] = "K";
                 tboard[0][6] = "K";
                 if (!hasRookMovedKingSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
@@ -911,7 +916,7 @@ public class Moves {
      */
     public boolean canKingCastleQueenSide(String side, String[][] tboard) {
         if (side.equals("white")) {
-            if (tboard[7][3].equals("") && tboard[7][2].equals("") && tboard[7][1].equals("")) {
+            if (tboard[7][3].equals("") && tboard[7][2].equals("") && tboard[7][1].equals("") && tboard[7][4].equals("k") && tboard[7][0].equals("r")) {
                 tboard[7][3] = "k";
                 tboard[7][2] = "k";
                 if (!hasRookMovedQueenSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
@@ -919,7 +924,7 @@ public class Moves {
                 }
             }
         } else {
-            if (tboard[0][3].equals("") && tboard[0][2].equals("") && tboard[0][1].equals("")) {
+            if (tboard[0][3].equals("") && tboard[0][2].equals("") && tboard[0][1].equals("") && tboard[0][4].equals("K") && tboard[0][0].equals("R")) {
                 tboard[0][3] = "K";
                 tboard[0][2] = "K";
                 if (!hasRookMovedQueenSide(side) && !hasKingMoved(side) && !isKingInCheck(side, tboard)) {
