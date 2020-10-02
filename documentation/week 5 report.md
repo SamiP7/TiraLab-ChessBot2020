@@ -6,6 +6,7 @@
 * Pruning could probably be made more efficient by sorting the order of the moves it has to test so it could go further down the tree. Currently going to depth 4 the algorithm takes over 10 secs to run most of the time so settling for depth 3 is good enough for now.
 * Alpha-beta was implemented with the help of this: https://www.naftaliharris.com/blog/chess/
 * Evaluation function values with the help of this: https://www.chessprogramming.org/Simplified_Evaluation_Function
+* Time spent: about 12h
 
 **Next week**
 
