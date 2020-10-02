@@ -7,7 +7,7 @@
 * Alpha-beta was implemented with the help of this: https://www.naftaliharris.com/blog/chess/
 * Evaluation function values with the help of this: https://www.chessprogramming.org/Simplified_Evaluation_Function
 
-** Next week**
+**Next week**
 
 * Maybe improving the heuristic since the bot is a bit too aggressive which is most likely the reason for most of the bad moves it makes.
 * Most likely what I'll end up mostly doing is just more documentation and testing since these are quite lacking in this project currently.
