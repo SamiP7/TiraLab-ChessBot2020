@@ -593,8 +593,8 @@ public class Moves {
         if (side == Side.WHITE) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (tboard[i][j].equals("p")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), tboard);
+                    if (tboard[i][j].equals("q")) {
+                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("b")) {
@@ -608,13 +608,13 @@ public class Moves {
                     if (tboard[i][j].equals("n")) {
                         ArrayList<String> temp = knightMoves(i, j, new Pieces("n"), tboard);
                         allMoves.addAll(temp);
-                    }
-                    if (tboard[i][j].equals("q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), tboard);
-                        allMoves.addAll(temp);
-                    }
+                    }                   
                     if (tboard[i][j].equals("k")) {
                         ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
+                        allMoves.addAll(temp);
+                    }
+                    if (tboard[i][j].equals("p")) {
+                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), tboard);
                         allMoves.addAll(temp);
                     }
                     
@@ -642,8 +642,8 @@ public class Moves {
         } else {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    if (tboard[i][j].equals("P")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), tboard);
+                    if (tboard[i][j].equals("Q")) {
+                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("B")) {
@@ -658,12 +658,12 @@ public class Moves {
                         ArrayList<String> temp = knightMoves(i, j, new Pieces("N"), tboard);
                         allMoves.addAll(temp);
                     }
-                    if (tboard[i][j].equals("Q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), tboard);
-                        allMoves.addAll(temp);
-                    }
                     if (tboard[i][j].equals("K")) {
                         ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
+                        allMoves.addAll(temp);
+                    }
+                    if (tboard[i][j].equals("P")) {
+                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), tboard);
                         allMoves.addAll(temp);
                     }
                 }
@@ -935,21 +935,5 @@ public class Moves {
         return false;
     }
 
-    public boolean isPositionCheckMate(String side, String[][] tboard) {
-        if (side.equals("white")) {
-            ArrayList<String> moves = allMovesForSide(Side.BLACK, tboard);
-            if (moves.isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            ArrayList<String> moves = allMovesForSide(Side.WHITE, tboard);
-            if (moves.isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+    
 }
