@@ -41,7 +41,7 @@ public class Bot implements ChessBot {
         //ArrayList<String> moves = move.allMovesForSide(gs.playing, b.returnBoard());
         MinMax bestMoves = new MinMax(b, gs);
         ArrayList<String> moves = bestMoves.minMaxMove();
-        System.out.println(moves + " juuu hei");
+        //System.out.println(moves + " juuu hei");
         
         /*if (!gs.moves.isEmpty()) {
             System.out.println(gs.getLatestMove() + " viimeisin liike");

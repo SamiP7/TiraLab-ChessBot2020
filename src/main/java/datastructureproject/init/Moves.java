@@ -934,4 +934,22 @@ public class Moves {
         }
         return false;
     }
+
+    public boolean isPositionCheckMate(String side, String[][] tboard) {
+        if (side.equals("white")) {
+            ArrayList<String> moves = allMovesForSide(Side.BLACK, tboard);
+            if (moves.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            ArrayList<String> moves = allMovesForSide(Side.WHITE, tboard);
+            if (moves.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

@@ -201,8 +201,8 @@ public class MinMax {
      * @param beta
      * @return ScoreMove which is just an object with the best score and what move gives it
      */
-    private ScoreMove alphaBeta(String[][] tboard, int depth, String side, int alpha, int beta) {
-        if (depth == 0) {
+    private ScoreMove alphaBeta(String[][] tboard, int depth, String side, int alpha, int beta, String move) {
+        if (depth <= 0 || moves.isPositionCheckMate(side, tboard)) {
             return new ScoreMove(evaluate(tboard), new String(""));
         } else {
             if (side.equals("white")) {
@@ -220,10 +220,10 @@ public class MinMax {
                     
                     this.bClass.doMove(temp, tempBoard);
                     
-                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "black", alpha, beta);
+                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "black", alpha, beta, bestMove);
                     if (sm.returnScore() > alpha) {
                         alpha = sm.returnScore();
-                        bestMove = sm.returnMove();                       
+                        bestMove = m;                       
                     }
                     if (alpha >= beta) {
                         break;
@@ -244,10 +244,10 @@ public class MinMax {
                     }
                     String temp = this.moves.convertBackFromUCI(m);
                     this.bClass.doMove(temp, tempBoard);
-                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "white", alpha, beta);
+                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "white", alpha, beta, bestMove);
                     if (sm.returnScore() < beta) {
                         beta = sm.returnScore();
-                        bestMove = sm.returnMove();
+                        bestMove = m;
                         
                     }
                     if (alpha >= beta) {
@@ -266,52 +266,35 @@ public class MinMax {
      * @return List of all the best moves we can make after alpha-beta pruning all the possible moves.
      */
     public ArrayList<String> minMaxMove() {
-        ArrayList<String> allMovesForSide = this.moves.allMovesForSide(gs.playing, this.board);
+        //ArrayList<String> allMovesForSide = this.moves.allMovesForSide(gs.playing, this.board);
         if (gs.playing == Side.WHITE) {
             ArrayList<String> bestMoves = new ArrayList<>();
-            int max = Integer.MIN_VALUE;
-  
-            for (String m : allMovesForSide) {
-                String[][] tempBoard = new String[8][8];
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        tempBoard[i][j] = this.board[i][j];
-                    }
-                }
-                String temp = this.moves.convertBackFromUCI(m);
-                this.bClass.doMove(temp, tempBoard);
-                ScoreMove sm = alphaBeta(tempBoard, 2, "black", Integer.MIN_VALUE, Integer.MAX_VALUE);
-                if (sm.returnScore() > max) {
-                    bestMoves.clear();
-                    bestMoves.add(m);
-                    max = sm.returnScore();
-                } else if (sm.returnScore() == max) {
-                    bestMoves.add(m);
+            int alpha = Integer.MIN_VALUE;
+            int beta = Integer.MAX_VALUE;
+            String[][] tempBoard = new String[8][8];
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    tempBoard[i][j] = this.board[i][j];
                 }
             }
+            ScoreMove sm = alphaBeta(tempBoard, 4, "white", alpha, beta, "");
+            bestMoves.add(sm.returnMove());
+            
             return bestMoves;
             
         } else {
-            int min = Integer.MAX_VALUE;
             ArrayList<String> bestMoves = new ArrayList<>();
-            for (String m : allMovesForSide) {
-                String[][] tempBoard = new String[8][8];
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        tempBoard[i][j] = this.board[i][j];
-                    }
-                }
-                String temp = this.moves.convertBackFromUCI(m);
-                this.bClass.doMove(temp, tempBoard);
-                ScoreMove sm = alphaBeta(tempBoard, 2, "white", Integer.MIN_VALUE, Integer.MAX_VALUE);
-                if (sm.returnScore() < min) {
-                    bestMoves.clear();
-                    bestMoves.add(m);
-                    min = sm.returnScore();
-                } else if (sm.returnScore() == min) {
-                    bestMoves.add(m);
+            int alpha = Integer.MIN_VALUE;
+            int beta = Integer.MAX_VALUE;
+            String[][] tempBoard = new String[8][8];
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    tempBoard[i][j] = this.board[i][j];
                 }
             }
+            ScoreMove sm = alphaBeta(tempBoard, 4, "black", alpha, beta, "");
+            bestMoves.add(sm.returnMove());
+            
             return bestMoves;
         }
         
