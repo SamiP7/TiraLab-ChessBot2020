@@ -11,12 +11,14 @@ import main.java.datastructureproject.algorithms.*;
  */
 
 public class Bot implements ChessBot {
+
     private Board b;
-    private Random random; 
+    private Random random;
 
     public Bot() {
-        this.random = new Random();
+
         this.b = new Board();
+        this.random = new Random();
     }
 
     @Override
@@ -28,6 +30,12 @@ public class Bot implements ChessBot {
         if (myMove != null) {
             //Transform the move into a UCI string representation
             return myMove.toString();
+        } else {
+            Moves noGoodMoves = new Moves(b, gs);
+            StringList move = noGoodMoves.allMovesForSide(gs.playing, b.returnBoard());
+            if (move.size() > 0) {
+                return move.get(random.nextInt(move.size()));
+            }
         }
 
         return null;
@@ -39,8 +47,8 @@ public class Bot implements ChessBot {
         }*/
         //Moves moves = new Moves(b, gs);
         //ArrayList<String> moves = move.allMovesForSide(gs.playing, b.returnBoard());
-        MinMax bestMoves = new MinMax(b, gs);
-        ArrayList<String> moves = bestMoves.minMaxMove();
+        MinMax bestMove = new MinMax(b, gs);
+        String move = bestMove.minMaxMove();
         //System.out.println(moves + " juuu hei");
         
         /*if (!gs.moves.isEmpty()) {
@@ -54,8 +62,8 @@ public class Bot implements ChessBot {
         }*/
         
         //Returns null if no legal moves available, else returns a randomly selected legal move.
-        if (moves.size() > 0) {
-            return moves.get(random.nextInt(moves.size()));
+        if (move != null && !move.equals("")) {
+            return move;
         } else {
             return null;
         }

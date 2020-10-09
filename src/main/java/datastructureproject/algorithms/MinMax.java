@@ -199,6 +199,7 @@ public class MinMax {
      * @param side whose turn is it
      * @param alpha
      * @param beta
+     * @param eval evaluation value of our current board
      * @return ScoreMove which is just an object with the best score and what move gives it
      */
     private ScoreMove alphaBeta(String[][] tboard, int depth, String side, int alpha, int beta, String move) {
@@ -213,12 +214,22 @@ public class MinMax {
             }
             if (side.equals("white")) {
                 String bestMove = "";
-                ArrayList<String> allMovesForSide = this.moves.allMovesForSide(Side.WHITE, tboard);
+                StringList allMovesForSide = this.moves.allMovesForSide(Side.WHITE, tboard);
 
-                for (String m : allMovesForSide) {
+                for (int i = 0; i < allMovesForSide.size(); i++) {
+                    String m = allMovesForSide.get(i);
                     String temp = this.moves.convertBackFromUCI(m);
+                    //int tempEval = eval;
+                    
+
+                    //eval -= (eva(Integer.valueOf(temp2[0]), Integer.valueOf(temp2[1]), tboard));
+                    //eval -= (eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tboard));
+
                     this.bClass.doMove(temp, tempBoard);
+                    //eval += eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tempBoard);
+
                     ScoreMove sm = alphaBeta(tempBoard, depth - 1, "black", alpha, beta, bestMove);
+                    //eval = tempEval;
                     String temp2[] = temp.split("");
                     tempBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = tboard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
                     tempBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
@@ -235,12 +246,21 @@ public class MinMax {
 
             } else {
                 String bestMove = "";
-                ArrayList<String> allMovesForSide = this.moves.allMovesForSide(Side.BLACK, tboard);
-                for (String m : allMovesForSide) {
-                    
+                StringList allMovesForSide = this.moves.allMovesForSide(Side.BLACK, tboard);
+                for (int i = 0; i < allMovesForSide.size(); i++) {
+                    String m = allMovesForSide.get(i);
                     String temp = this.moves.convertBackFromUCI(m);
+                    //int tempEval = eval;
+                    
+
+                    //eval -= (eva(Integer.valueOf(temp2[0]), Integer.valueOf(temp2[1]), tboard));
+                    //eval -= (eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tboard));
+
                     this.bClass.doMove(temp, tempBoard);
+                    //eval += eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tempBoard);
+
                     ScoreMove sm = alphaBeta(tempBoard, depth - 1, "white", alpha, beta, bestMove);
+                    //eval = tempEval;
                     String temp2[] = temp.split("");
                     tempBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = tboard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
                     tempBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
@@ -261,36 +281,33 @@ public class MinMax {
 
 
     /**
-     * First scans the nearest children of the starting node. Implemented this way in case we have several contenders for the best move to make.
-     * After that it runs alpha-beta on all the nodes we got and returns the best contenders as a list.
-     * @return List of all the best moves we can make after alpha-beta pruning all the possible moves.
+     * Does minmax search with alpha-beta pruning to get the best move from our available moves.
+     * @return best move
      */
-    public ArrayList<String> minMaxMove() {
-        //ArrayList<String> allMovesForSide = this.moves.allMovesForSide(gs.playing, this.board);
+    public String minMaxMove() {
         if (gs.playing == Side.WHITE) {
-            ArrayList<String> bestMoves = new ArrayList<>();
             int alpha = Integer.MIN_VALUE;
             int beta = Integer.MAX_VALUE;
-            
+            //int eval = evaluate(this.board);
             ScoreMove sm = alphaBeta(this.board, 4, "white", alpha, beta, "");
-            bestMoves.add(sm.returnMove());
             
-            return bestMoves;
+            return sm.returnMove();
             
         } else {
-            ArrayList<String> bestMoves = new ArrayList<>();
+
             int alpha = Integer.MIN_VALUE;
             int beta = Integer.MAX_VALUE;
-            
+            //int eval = evaluate(this.board);
             ScoreMove sm = alphaBeta(this.board, 4, "black", alpha, beta, "");
-            bestMoves.add(sm.returnMove());
+
             
-            return bestMoves;
+            return sm.returnMove();
         }
         
         
     }
 
+    
 
     /**
     * Heurastic evaluation given the board as a parameter.
@@ -309,7 +326,7 @@ public class MinMax {
                         value += (WhiteKingEndGameSquareTable[i][j]);
                     }
                 }
-                if (tboard[i][j].equals("K")) {
+                else if (tboard[i][j].equals("K")) {
                     value -= 20000;
                     if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
                         value -= (BlackKingMiddleGameSquareTable[i][j]);
@@ -317,39 +334,91 @@ public class MinMax {
                         value -= (BlackKingEndGameSquareTable[i][j]);
                     }
                 }
-                if (tboard[i][j].equals("q")) {
+                else if (tboard[i][j].equals("q")) {
                     value += 900 + (WhiteQueenSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("Q")) {
+                else if (tboard[i][j].equals("Q")) {
                     value -= 900 - (BlackQueenSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("n")) {
+                else if (tboard[i][j].equals("n")) {
                     value += 320 + (WhiteKnightSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("N")) {
+                else if (tboard[i][j].equals("N")) {
                     value -= 320 - (BlackKnightSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("b")) {
+                else if (tboard[i][j].equals("b")) {
                     value += 330 + (WhiteBishopSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("B")) {
+                else if (tboard[i][j].equals("B")) {
                     value -= 330 - (BlackBishopSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("r")) {
+                else if (tboard[i][j].equals("r")) {
                     value += 500 + (WhiteRookSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("R")) {
+                else if (tboard[i][j].equals("R")) {
                     value -= 500 - (BlackRookSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("p")) {
+                else if (tboard[i][j].equals("p")) {
                     value += 100 + (WhitePawnSquareTable[i][j]);
                 }
-                if (tboard[i][j].equals("P")) {
+                else if (tboard[i][j].equals("P")) {
                     value -= 100 - (BlackPawnSquareTable[i][j]);
                 }
             }
         }
         return value;
+    }
+
+
+    /**
+    * Gets the evaluation value directly given the i and j parameters. Reduntant as of now since I can't get it to run correctly.
+    * @param i vertical
+    * @param j horizontal
+    * @param tboard current board
+    * @return value of the node in the current board
+    */
+    public int eva(int i, int j, String[][] tboard) {
+        switch(tboard[i][j]) {
+            case("p"):
+                return 100 + (WhitePawnSquareTable[i][j]);
+            case("n"):
+                return 320 + (WhiteKnightSquareTable[i][j]);
+            case("q"):
+                return 900 + (WhiteQueenSquareTable[i][j]);
+            case("b"):
+                return 330 + (WhiteBishopSquareTable[i][j]);
+            case("r"):
+                return 500 + (WhiteRookSquareTable[i][j]);
+            case("k"):
+                int value = 20000;
+                if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
+                    value += (WhiteKingMiddleGameSquareTable[i][j]);
+                } else if (gs.getTurnCount() > 28) {
+                    value += (WhiteKingEndGameSquareTable[i][j]);
+                }
+                return value;
+            
+            case("P"):
+                return -(100 + (BlackPawnSquareTable[i][j]));
+            case("N"):
+                return -(320 + (BlackKnightSquareTable[i][j]));
+            case("Q"):
+                return -(900 + (BlackQueenSquareTable[i][j]));
+            case("B"):
+                return -(330 + (BlackBishopSquareTable[i][j]));
+            case("R"):
+                return -(500 + (BlackRookSquareTable[i][j]));
+            case("K"):
+                value = 20000;
+                if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
+                    value += (BlackKingMiddleGameSquareTable[i][j]);
+                } else if (gs.getTurnCount() > 28) {
+                    value += (BlackKingEndGameSquareTable[i][j]);
+                }
+                return -value;
+            default:
+                return 0;
+        }
     }
 
     

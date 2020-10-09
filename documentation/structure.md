@@ -19,12 +19,20 @@ Currently quite redundant class so it will most likely be deleted in the future.
 
 ### MinMax
 
-Basic algorithm which tries to maximise our score and drop the opponents as low as possible with the goal of winning the game of course. This is currently heavily under construction but it does have a slight improvement on the bots play. With its current status, it can comfortably win against level 2 bot but it does get crushed against level 3.
-Currently it analyzes all the possible moves we can make which are provided by the Moves class and tries to pick the best ones by looking at the score of the move which is determined by what piece we capture and what piece can the opponent capture after our move.
+Basic algorithm which tries to maximise our score and drop the opponents as low as possible with the goal of winning the game of course. With its current status, it can comfortably win against level 3 bot, can hold it's own against level 4 but level 5 crushes it.
+Currently it analyzes all the possible moves we can make which are provided by the Moves class and tries to pick the best one with the help of minmaxing and heuristics. Currently it can only reach depth 4 and it's quite slow even then. This is going to be worked on by the help of another algorithm or by trying to make the current implementation more efficient.
+
+### Heuristics
+
+Heuristic used by the program have been gained from [here](https://www.chessprogramming.org/Simplified_Evaluation_Function). This basic heuristic provides favored locations for each piece and their values so the bot knows which pieces it should try to capture and how it should try to move. Making a more complicated one is most likely out of my skill range so I'm not attempting to make my own
+
+### String list
+
+My own ArrayList implementation which can only handle strings. This has most of the basic ArrayList methods and also one unique one called addUnique which only adds the string to the array, if it doesn't contain it.
 
 ### Miscellaneous
 
-If you want more info about the classes, check the javadoc after building the project, which can then be found in this path: */build/docs/javadoc/allclasses.html*
+If you want more info about the classes, check out the javadoc after building the project, which can then be found from this path: */build/docs/javadoc/allclasses.html*
 
 Other classes are provided from [this](https://github.com/TiraLabra/chess) template. They only handle the communication with the Lichess server and you can find more information about them from the given link.
 

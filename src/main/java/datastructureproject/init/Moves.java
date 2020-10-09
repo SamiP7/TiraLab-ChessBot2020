@@ -30,10 +30,9 @@ public class Moves {
      * @param tboard temporary board to test possibilities with
      * @return all the moves that a knight can do
      */
-    public ArrayList<String> knightMoves(int sI, int sJ, Pieces p, String[][] tboard) {
-        ArrayList<String> moves = new ArrayList<>();
-        HashSet<String> movesTemp = new HashSet<>();
-        ArrayList<String> convert = new ArrayList<>();
+    public StringList knightMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+        StringList moves = new StringList();
+        StringList movesTemp = new StringList();
         if (possibleMoves(sI + 1, sJ + 2, p, tboard) >= 0) {
             movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 2)));
         }
@@ -58,9 +57,8 @@ public class Moves {
         if (possibleMoves(sI - 1, sJ - 2, p, tboard) >= 0) {
             movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 2)));
         }
-        convert.addAll(movesTemp);
-        for (String i : convert) {
-            moves.add(convertToUCI(i));
+        for (int i = 0; i < movesTemp.size(); i++) {
+            moves.addUnique(convertToUCI(movesTemp.get(i)));
         }
         return moves;
     }
@@ -74,8 +72,8 @@ public class Moves {
      * @return all the moves that a queen can do
      */
 
-    public ArrayList<String> queenMoves(int sI, int sJ, Pieces p, String[][] tboard) {
-        ArrayList<String> moves = new ArrayList<>();
+    public StringList queenMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+        StringList moves = new StringList();
         moves.addAll(bishopMoves(sI, sJ, p, tboard));
         moves.addAll(rookMoves(sI, sJ, p, tboard));
         return moves;
@@ -90,10 +88,9 @@ public class Moves {
      * @return all the moves that a bishop can do
      */
     
-    public ArrayList<String> bishopMoves(int sI, int sJ, Pieces p, String[][] tboard) {
-        ArrayList<String> moves = new ArrayList<>();
-        HashSet<String> movesTemp = new HashSet<>();
-        ArrayList<String> convert = new ArrayList<>();
+    public StringList bishopMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+        StringList moves = new StringList();
+        StringList movesTemp = new StringList();
         for (int i = sI + 1; i < 8; i++) {
             int c = possibleMoves(i, sJ + (i - sI), p, tboard);
             boolean shouldBreak = true;
@@ -162,9 +159,9 @@ public class Moves {
                 break;
             }
         }
-        convert.addAll(movesTemp);
-        for (String i : convert) {
-            moves.add(convertToUCI(i));
+        
+        for (int i = 0; i < movesTemp.size(); i++) {
+            moves.addUnique(convertToUCI(movesTemp.get(i)));
         }
         return moves;
     }
@@ -176,10 +173,9 @@ public class Moves {
      * @param tboard temporary board to test possibilities with
      * @return all the moves that a rook can do
      */
-    public ArrayList<String> rookMoves(int sI, int sJ, Pieces p, String[][] tboard) {
-        ArrayList<String> moves = new ArrayList<>();
-        HashSet<String> movesTemp = new HashSet<>();
-        ArrayList<String> convert = new ArrayList<>();
+    public StringList rookMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+        StringList moves = new StringList();
+        StringList movesTemp = new StringList();
         for (int i = sI + 1; i < 8; i++) {
             int c = possibleMoves(i, sJ, p, tboard);
             boolean shouldBreak = true;
@@ -248,9 +244,8 @@ public class Moves {
                 break;
             }
         }
-        convert.addAll(movesTemp);
-        for (String i : convert) {
-            moves.add(convertToUCI(i));
+        for (int i = 0; i < movesTemp.size(); i++) {
+            moves.addUnique(convertToUCI(movesTemp.get(i)));
         }
         return moves;
     }
@@ -263,10 +258,9 @@ public class Moves {
      * @param side which color the king is
      * @return all the moves that a king can do
      */
-    public ArrayList<String> kingMoves(int sI, int sJ, Pieces p, String[][] tboard, String side) {
-        ArrayList<String> moves = new ArrayList<>();
-        HashSet<String> movesTemp = new HashSet<>();
-        ArrayList<String> convert = new ArrayList<>();
+    public StringList kingMoves(int sI, int sJ, Pieces p, String[][] tboard, String side) {
+        StringList moves = new StringList();
+        StringList movesTemp = new StringList();
         if (possibleMoves(sI + 1, sJ + 1, p, tboard) >= 0) {
             movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1)));
         }
@@ -320,9 +314,8 @@ public class Moves {
             }
         }
         
-        convert.addAll(movesTemp);
-        for (String i : convert) {
-            moves.add(convertToUCI(i));
+        for (int i = 0; i < movesTemp.size(); i++) {
+            moves.addUnique(convertToUCI(movesTemp.get(i)));
         }
         return moves;
     }
@@ -334,10 +327,9 @@ public class Moves {
      * @param tboard temporary board to test possibilities with
      * @return all the moves that a pawn can do
      */
-    public ArrayList<String> pawnMoves(int sI, int sJ, Pieces p, String[][] tboard) {
-        ArrayList<String> moves = new ArrayList<>();
-        HashSet<String> movesTemp = new HashSet<>();
-        ArrayList<String> convert = new ArrayList<>();
+    public StringList pawnMoves(int sI, int sJ, Pieces p, String[][] tboard) {
+        StringList moves = new StringList();
+        StringList movesTemp = new StringList();
         String piece = p.toString();
         char pawn = piece.charAt(0);
         if (Character.isUpperCase(pawn)) {
@@ -401,9 +393,8 @@ public class Moves {
                 }
             }
         }
-        convert.addAll(movesTemp);
-        for (String i : convert) {
-            moves.add(convertToUCI(i));
+        for (int i = 0; i < movesTemp.size(); i++) {
+            moves.addUnique(convertToUCI(movesTemp.get(i)));
         }
         return moves;
     }
@@ -588,39 +579,39 @@ public class Moves {
      * @param tboard temporary board which can be used to generate future moves
      * @return possible moves
      */
-    public ArrayList<String> allMovesForSide(Side side, String[][] tboard) {
-        ArrayList<String> allMoves = new ArrayList<>();
+    public StringList allMovesForSide(Side side, String[][] tboard) {
+        StringList allMoves = new StringList();
         if (side == Side.WHITE) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (tboard[i][j].equals("q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), tboard);
+                        StringList temp = queenMoves(i, j, new Pieces("q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("b")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("b"), tboard);
+                        StringList temp = bishopMoves(i, j, new Pieces("b"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("r")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("r"), tboard);
+                        StringList temp = rookMoves(i, j, new Pieces("r"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("n")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("n"), tboard);
+                        StringList temp = knightMoves(i, j, new Pieces("n"), tboard);
                         allMoves.addAll(temp);
                     }                   
                     if (tboard[i][j].equals("k")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
+                        StringList temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("p")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), tboard);
+                        StringList temp = pawnMoves(i, j, new Pieces("p"), tboard);
                         allMoves.addAll(temp);
                     }
                     
                 }
             }
-            ArrayList<String> allMovesIfKingInCheck = new ArrayList<>();
+            StringList allMovesIfKingInCheck = new StringList();
             for (int i = 0; i < allMoves.size(); i++) {
                 String temp = convertBackFromUCI(allMoves.get(i));
                 String[] temp2 = temp.split("");
@@ -643,32 +634,32 @@ public class Moves {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (tboard[i][j].equals("Q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), tboard);
+                        StringList temp = queenMoves(i, j, new Pieces("Q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("B")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("B"), tboard);
+                        StringList temp = bishopMoves(i, j, new Pieces("B"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("R")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("R"), tboard);
+                        StringList temp = rookMoves(i, j, new Pieces("R"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("N")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("N"), tboard);
+                        StringList temp = knightMoves(i, j, new Pieces("N"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("K")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
+                        StringList temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("P")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), tboard);
+                        StringList temp = pawnMoves(i, j, new Pieces("P"), tboard);
                         allMoves.addAll(temp);
                     }
                 }
             }
-            ArrayList<String> allMovesIfKingInCheck = new ArrayList<>();
+            StringList allMovesIfKingInCheck = new StringList();
             for (int i = 0; i < allMoves.size(); i++) {
                 String temp = convertBackFromUCI(allMoves.get(i));
                 String[] temp2 = temp.split("");
@@ -698,32 +689,32 @@ public class Moves {
      */
 
     public boolean isKingInCheck(String color, String[][] tboard) {
-        ArrayList<String> allMoves = new ArrayList<>();
+        StringList allMoves = new StringList();
         if (color.equals("white")) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (tboard[i][j].equals("P")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("P"), tboard);
+                        StringList temp = pawnMoves(i, j, new Pieces("P"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("B")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("B"), tboard);
+                        StringList temp = bishopMoves(i, j, new Pieces("B"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("R")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("R"), tboard);
+                        StringList temp = rookMoves(i, j, new Pieces("R"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("N")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("N"), tboard);
+                        StringList temp = knightMoves(i, j, new Pieces("N"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("Q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("Q"), tboard);
+                        StringList temp = queenMoves(i, j, new Pieces("Q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("K")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
+                        StringList temp = kingMoves(i, j, new Pieces("K"), tboard, new String("black"));
                         allMoves.addAll(temp);
                     }
                     
@@ -745,27 +736,27 @@ public class Moves {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (tboard[i][j].equals("p")) {
-                        ArrayList<String> temp = pawnMoves(i, j, new Pieces("p"), tboard);
+                        StringList temp = pawnMoves(i, j, new Pieces("p"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("b")) {
-                        ArrayList<String> temp = bishopMoves(i, j, new Pieces("b"), tboard);
+                        StringList temp = bishopMoves(i, j, new Pieces("b"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("r")) {
-                        ArrayList<String> temp = rookMoves(i, j, new Pieces("r"), tboard);
+                        StringList temp = rookMoves(i, j, new Pieces("r"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("n")) {
-                        ArrayList<String> temp = knightMoves(i, j, new Pieces("n"), tboard);
+                        StringList temp = knightMoves(i, j, new Pieces("n"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("q")) {
-                        ArrayList<String> temp = queenMoves(i, j, new Pieces("q"), tboard);
+                        StringList temp = queenMoves(i, j, new Pieces("q"), tboard);
                         allMoves.addAll(temp);
                     }
                     if (tboard[i][j].equals("k")) {
-                        ArrayList<String> temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
+                        StringList temp = kingMoves(i, j, new Pieces("k"), tboard, new String("white"));
                         allMoves.addAll(temp);
                     }
                 }
@@ -842,14 +833,14 @@ public class Moves {
         if (side.equals("white")) {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if ((temp[0].equals("a") && temp[1].equals("1")) || (temp[2].equals("a") && temp[3].equals("1"))) {
+                if ((temp[0].equals("h") && temp[1].equals("1")) || (temp[2].equals("h") && temp[3].equals("1"))) {
                     return true;
                 }
             }
         } else {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if ((temp[0].equals("a") && temp[1].equals("8")) || (temp[2].equals("a") && temp[3].equals("8"))) {
+                if ((temp[0].equals("h") && temp[1].equals("8")) || (temp[2].equals("h") && temp[3].equals("8"))) {
                     return true;
                 }
             }
@@ -866,14 +857,14 @@ public class Moves {
         if (side.equals("white")) {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if ((temp[0].equals("h") && temp[1].equals("1")) || (temp[0].equals("h") && temp[1].equals("1"))) {
+                if ((temp[0].equals("a") && temp[1].equals("1")) || (temp[0].equals("a") && temp[1].equals("1"))) {
                     return true;
                 }
             }
         } else {
             for (String s : gs.moves) {
                 String[] temp = s.split("");
-                if ((temp[0].equals("h") && temp[1].equals("8")) || (temp[0].equals("h") && temp[1].equals("8"))) {
+                if ((temp[0].equals("a") && temp[1].equals("8")) || (temp[0].equals("a") && temp[1].equals("8"))) {
                     return true;
                 }
             }
