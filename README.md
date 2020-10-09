@@ -18,6 +18,8 @@
 
 [Week 5 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%205%20report.md)
 
+[Week 6 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%206%20report.md)
+
 
 ### Jacoco & Checkstyle
 * These can be found after building the project (guide for that is found from the **early guide for running the bot**).
