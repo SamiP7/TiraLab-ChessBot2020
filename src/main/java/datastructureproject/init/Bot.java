@@ -42,27 +42,19 @@ public class Bot implements ChessBot {
     }
 
     public String getMove(GameState gs) {
-        /*for (int i = 0; i < 8; i++) {
-            System.out.println("?? " + Arrays.toString(b.returnBoard()[i]));
-        }*/
-        //Moves moves = new Moves(b, gs);
-        //ArrayList<String> moves = move.allMovesForSide(gs.playing, b.returnBoard());
+
         MinMax bestMove = new MinMax(b, gs);
         String move = bestMove.minMaxMove();
-        //System.out.println(moves + " juuu hei");
         
-        /*if (!gs.moves.isEmpty()) {
-            System.out.println(gs.getLatestMove() + " viimeisin liike");
-        } 
-        //commented out parts are used for debugging so ignore them
-        //System.out.println("Mahdolliset liikkeet: " + moves);
-        String[][] a = b.returnBoard();
-        for (int i = 0; i < 8; i++) {
-            System.out.println(Arrays.toString(a[i]));
-        }*/
-        
+
         //Returns null if no legal moves available, else returns a randomly selected legal move.
         if (move != null && !move.equals("")) {
+            if (move.length() > 4) {
+                String temp[] = move.split("");
+                if (temp[4].equals("+")) {
+                    return new String(temp[0] + temp[1] + temp[2] + temp[3]);
+                }
+            }
             return move;
         } else {
             return null;

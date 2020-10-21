@@ -8,7 +8,7 @@ public class StringList {
 
 
     /**
-     * My own data structure to replace arraylist and in a sense hashset as well. 
+     * My own data structure to replace arraylist and in a sense, hashset as well. 
      * Methods are self explanatory so won't be going deeper in to those here.
      */
     public StringList() {
@@ -43,6 +43,12 @@ public class StringList {
 
     public int size() {
         return i;
+    }
+
+    public void set(Integer j, String s) {
+        if (j < size()) {
+            this.list[j] = s;
+        }
     }
 
     public void addAll(StringList toBeAdded) {

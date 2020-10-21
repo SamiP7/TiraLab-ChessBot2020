@@ -20,7 +20,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        Map<String, String> env = System.getenv();
+        /*Map<String, String> env = System.getenv();
         String token = null;
         boolean isLichess = false;
         // Parse passed parameters.
@@ -40,7 +40,7 @@ public class App {
         You need to place your bot implementation to the variable below.
         Make sure it implements the interface ChessBot, and don't change the variable name!
         */
-        ChessBot bot = new Bot(); // Your bot here!
+        /*ChessBot bot = new Bot(); // Your bot here!
 
         if (isLichess) {
             if (token == null) {
@@ -69,12 +69,76 @@ public class App {
         } //*/
 
         // Just random tests done on the fly to see if everything works as intended so ignore these for now
-        /*Board a = new Board();
+        
+        Board a = new Board();
+        
+
+        /*a.doMove(a.convertBackFromUCI("b1c3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c7c6"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d2d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d8a5"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("g1f3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d7d6"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2e4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c8g4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c1d2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("f7f6"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c3e2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a5b5"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a1b1"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("g4f3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("g2f3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("b5a4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2c3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a4d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c3e2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d4a4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2c3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a4d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c3e2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d4a4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("b1a1"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a4b5"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2g3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("b5b2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a2a4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("b7b6"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("a1b1"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("b2d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c2c3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d4c5"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d2e3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c5c3"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e3d2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c3d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("g3e2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d4c4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2c1"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c4d4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c1e2"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d4c4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("e2c1"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("c4a4"), a.returnBoard());
+        a.doMove(a.convertBackFromUCI("d1a4"), a.returnBoard());*/
+        a.returnBoard()[6][0] = "";
+        a.returnBoard()[1][1] = "";
+        a.returnBoard()[3][0] = "p";
+        a.returnBoard()[3][1] = "P";
+        a.doMove("3021+", a.returnBoard());
+        a.undoMove("3021+", a.returnBoard(), "P");
         String[][] b = a.returnBoard();
+        
+        
         for (int i = 0; i < 8; i++) {
+            //Collections.reverse(Arrays.asList(b[i]));
             System.out.println(Arrays.toString(b[i]));
         }
-        System.out.println((b[7][3]));
+        System.out.println();
+        
+
+        
+        
+        //System.out.println((b[7][3]));
         /*String str = "f3h5";
         System.out.println(moves.convertBackFromUCI(str));
         String jotai = "x";

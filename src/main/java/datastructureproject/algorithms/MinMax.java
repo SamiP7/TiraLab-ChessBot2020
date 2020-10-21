@@ -206,33 +206,24 @@ public class MinMax {
         if (depth <= 0) {
             return new ScoreMove(evaluate(tboard), new String(""));
         } else {
-            String[][] tempBoard = new String[8][8];
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    tempBoard[i][j] = tboard[i][j];
-                }
-            }
             if (side.equals("white")) {
                 String bestMove = "";
                 StringList allMovesForSide = this.moves.allMovesForSide(Side.WHITE, tboard);
 
+                allMovesForSide = sortByHighestValueMove(allMovesForSide, tboard);
+
                 for (int i = 0; i < allMovesForSide.size(); i++) {
                     String m = allMovesForSide.get(i);
                     String temp = this.moves.convertBackFromUCI(m);
-                    //int tempEval = eval;
-                    
-
-                    //eval -= (eva(Integer.valueOf(temp2[0]), Integer.valueOf(temp2[1]), tboard));
-                    //eval -= (eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tboard));
-
-                    this.bClass.doMove(temp, tempBoard);
-                    //eval += eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tempBoard);
-
-                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "black", alpha, beta, bestMove);
-                    //eval = tempEval;
                     String temp2[] = temp.split("");
-                    tempBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = tboard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
-                    tempBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
+                    String saveValue = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
+
+                    this.bClass.doMove(temp, tboard);
+
+                    ScoreMove sm = alphaBeta(tboard, depth - 1, "black", alpha, beta, bestMove);
+                   
+                    this.bClass.undoMove(temp, tboard, saveValue);
+
                     if (sm.returnScore() > alpha) {
                         alpha = sm.returnScore();
                         bestMove = m;                       
@@ -247,32 +238,28 @@ public class MinMax {
             } else {
                 String bestMove = "";
                 StringList allMovesForSide = this.moves.allMovesForSide(Side.BLACK, tboard);
+                
+                allMovesForSide = sortByLowestValueMove(allMovesForSide, tboard);
+                
                 for (int i = 0; i < allMovesForSide.size(); i++) {
                     String m = allMovesForSide.get(i);
                     String temp = this.moves.convertBackFromUCI(m);
-                    //int tempEval = eval;
-                    
-
-                    //eval -= (eva(Integer.valueOf(temp2[0]), Integer.valueOf(temp2[1]), tboard));
-                    //eval -= (eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tboard));
-
-                    this.bClass.doMove(temp, tempBoard);
-                    //eval += eva(Integer.valueOf(temp2[2]), Integer.valueOf(temp2[3]), tempBoard);
-
-                    ScoreMove sm = alphaBeta(tempBoard, depth - 1, "white", alpha, beta, bestMove);
-                    //eval = tempEval;
                     String temp2[] = temp.split("");
-                    tempBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = tboard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
-                    tempBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
+                    String saveValue = tboard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])];
+                    
+                    this.bClass.doMove(temp, tboard);
+
+                    ScoreMove sm = alphaBeta(tboard, depth - 1, "white", alpha, beta, bestMove);
+                    
+                    this.bClass.undoMove(temp, tboard, saveValue);
+                    
                     if (sm.returnScore() < beta) {
                         beta = sm.returnScore();
                         bestMove = m;
-                        
                     }
                     if (alpha >= beta) {
                         break;
                     }
-                    
                 }
                 return new ScoreMove(beta, bestMove);
             }
@@ -285,21 +272,26 @@ public class MinMax {
      * @return best move
      */
     public String minMaxMove() {
+        String[][] tempBoard = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                tempBoard[i][j] = this.board[i][j];
+            }
+        }
         if (gs.playing == Side.WHITE) {
             int alpha = Integer.MIN_VALUE;
             int beta = Integer.MAX_VALUE;
-            //int eval = evaluate(this.board);
-            ScoreMove sm = alphaBeta(this.board, 4, "white", alpha, beta, "");
+            
+            ScoreMove sm = alphaBeta(tempBoard, 4, "white", alpha, beta, "");
             
             return sm.returnMove();
             
         } else {
 
             int alpha = Integer.MIN_VALUE;
-            int beta = Integer.MAX_VALUE;
-            //int eval = evaluate(this.board);
-            ScoreMove sm = alphaBeta(this.board, 4, "black", alpha, beta, "");
+            int beta = Integer.MAX_VALUE;          
 
+            ScoreMove sm = alphaBeta(tempBoard, 4, "black", alpha, beta, "");
             
             return sm.returnMove();
         }
@@ -312,7 +304,7 @@ public class MinMax {
     /**
     * Heurastic evaluation given the board as a parameter.
     * @param tboard temporary board to check heuristic of a move
-    * @return
+    * @return evaluation of the current board
     */
     public int evaluate(String[][] tboard) {
         int value = 0;
@@ -369,59 +361,64 @@ public class MinMax {
         return value;
     }
 
-
     /**
-    * Gets the evaluation value directly given the i and j parameters. Reduntant as of now since I can't get it to run correctly.
-    * @param i vertical
-    * @param j horizontal
-    * @param tboard current board
-    * @return value of the node in the current board
+    * We do an heurastic evaluation for a move and sort them by the highest evaluation.
+    * @param moveList generated moves which are to be sorted
+    * @param tboard the current board
+    * @return all moves sorted
     */
-    public int eva(int i, int j, String[][] tboard) {
-        switch(tboard[i][j]) {
-            case("p"):
-                return 100 + (WhitePawnSquareTable[i][j]);
-            case("n"):
-                return 320 + (WhiteKnightSquareTable[i][j]);
-            case("q"):
-                return 900 + (WhiteQueenSquareTable[i][j]);
-            case("b"):
-                return 330 + (WhiteBishopSquareTable[i][j]);
-            case("r"):
-                return 500 + (WhiteRookSquareTable[i][j]);
-            case("k"):
-                int value = 20000;
-                if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
-                    value += (WhiteKingMiddleGameSquareTable[i][j]);
-                } else if (gs.getTurnCount() > 28) {
-                    value += (WhiteKingEndGameSquareTable[i][j]);
-                }
-                return value;
-            
-            case("P"):
-                return -(100 + (BlackPawnSquareTable[i][j]));
-            case("N"):
-                return -(320 + (BlackKnightSquareTable[i][j]));
-            case("Q"):
-                return -(900 + (BlackQueenSquareTable[i][j]));
-            case("B"):
-                return -(330 + (BlackBishopSquareTable[i][j]));
-            case("R"):
-                return -(500 + (BlackRookSquareTable[i][j]));
-            case("K"):
-                value = 20000;
-                if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
-                    value += (BlackKingMiddleGameSquareTable[i][j]);
-                } else if (gs.getTurnCount() > 28) {
-                    value += (BlackKingEndGameSquareTable[i][j]);
-                }
-                return -value;
-            default:
-                return 0;
+    public StringList sortByHighestValueMove(StringList moveList, String[][] tboard) {
+        for (int i = 1; i < moveList.size() - 1; i++) {
+            int j = i - 1;
+            while (j >= 0 && evaluateMove(moveList.get(j), tboard) < evaluateMove(moveList.get(j + 1), tboard)) {
+                String storeMove = moveList.get(j);
+                moveList.set(j, moveList.get(j + 1));
+                moveList.set(j + 1, storeMove);
+                j -= 1;
+            }
         }
+
+        return moveList;
     }
 
+    /**
+     * We do an heurastic evaluation for a move and sort them by the lowest evaluation.
+     * @param moveList generated moves which are to be sorted
+     * @param tboard the current board
+     * @return all moves sorted
+     */
+    public StringList sortByLowestValueMove(StringList moveList, String[][] tboard) {
+        for (int i = 1; i < moveList.size() - 1; i++) {
+            int j = i - 1;
+            while (j >= 0 && evaluateMove(moveList.get(j), tboard) > evaluateMove(moveList.get(j + 1), tboard)) {
+                String storeMove = moveList.get(j);
+                moveList.set(j, moveList.get(j + 1));
+                moveList.set(j + 1, storeMove);
+                j -= 1;
+            }
+        }
+
+        return moveList;
+    }
     
+    /**
+     * Evaluation for an spesific move. We just do a given move on to the board and return the evaluation from it.
+     * @param move given move
+     * @param tboard temporary board on which the move is played to
+     * @return heuristic evaluation
+     */
+    public int evaluateMove(String move, String[][] tboard) {
+        String[][] tempBoard = new String[8][8];
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                tempBoard[i][j] = tboard[i][j];
+            }
+        }
+
+        this.bClass.doMove(this.moves.convertBackFromUCI(move), tempBoard);
+
+        return evaluate(tempBoard);
+    }
 
 
 }

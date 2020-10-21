@@ -42,7 +42,7 @@ public class MovesTest {
 
     @Test
     public void getKnightPossibleMovesAtTheStart() {
-        StringList moves = m.knightMoves(0, 1, new Pieces("N"), b.returnBoard());
+        StringList moves = m.knightMoves(0, 1, "N", b.returnBoard());
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("b8c6"));
         ans.add(new String("b8a6"));
@@ -52,12 +52,12 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
     public void getBishopPossibleMovesAtTheStart() {
-        StringList moves = m.bishopMoves(0, 2, new Pieces("B"), b.returnBoard());
+        StringList moves = m.bishopMoves(0, 2, "B", b.returnBoard());
         ArrayList<String> ans = new ArrayList<>();
         List<String> movesList = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
@@ -65,12 +65,12 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
     public void getPawnPossibleMovesAtTheStart() {
-        StringList moves = m.pawnMoves(6, 2, new Pieces("p"), b.returnBoard());
+        StringList moves = m.pawnMoves(6, 2, "p", b.returnBoard());
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("c2c3"));
         ans.add(new String("c2c4"));
@@ -80,12 +80,12 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
     public void getKingPossibleWhenMiddleOfTheBoard() {
-        StringList moves = m.kingMoves(4, 3, new Pieces("k"), b.returnBoard(), new String("white"));
+        StringList moves = m.kingMoves(4, 3, "k", b.returnBoard(), "white");
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("d4c3"));
         ans.add(new String("d4d3"));
@@ -101,7 +101,7 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
@@ -167,12 +167,12 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
     public void bishopMovesFromMiddle() {
-        StringList moves = m.bishopMoves(4, 3, new Pieces("B"), b.returnBoard());
+        StringList moves = m.bishopMoves(4, 3, "B", b.returnBoard());
         ArrayList<String> ans = new ArrayList<>();
         ans.add(new String("d4e3"));
         ans.add(new String("d4f2"));
@@ -188,35 +188,35 @@ public class MovesTest {
         }
         Collections.sort(movesList);
         Collections.sort(ans);
-        assertEquals(movesList, ans);
+        assertEquals(ans, movesList);
     }
 
     @Test
     public void convertToUCITest() {
         String str = "0021";
         String test = m.convertToUCI(str);
-        assertEquals(test, "a8b6");
+        assertEquals("a8b6", test);
     }
 
     @Test
     public void convertToUCIWithPromotionTest() {
         String str = "6777N";
         String test = m.convertToUCI(str);
-        assertEquals(test, "h2h1N");
+        assertEquals("h2h1N", test);
     }
 
     @Test
     public void convertBackFromUCITest() {
         String str = "a8b6";
         String test = m.convertBackFromUCI(str);
-        assertEquals(test, "0021");
+        assertEquals("0021", test);
     }
 
     @Test
     public void convertBackFromUCITest2() {
         String str = "A8B6";
         String test = m.convertBackFromUCI(str);
-        assertEquals(test, "0021");
+        assertEquals("0021", test);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class MovesTest {
         b.returnBoard()[7][6] = "";
         b.returnBoard()[7][5] = "";
         b.doMove(m.convertBackFromUCI("e1g1"), this.b.returnBoard());
-        assertEquals(b.returnBoard(), test);
+        assertEquals(test, b.returnBoard());
     }
 
     @Test
@@ -254,7 +254,7 @@ public class MovesTest {
         b.returnBoard()[7][2] = "";
         b.returnBoard()[7][1] = "";
         b.doMove(m.convertBackFromUCI("e1c1"), this.b.returnBoard());
-        assertEquals(b.returnBoard(), test);
+        assertEquals(test, b.returnBoard());
     }
 
     @Test
@@ -268,7 +268,7 @@ public class MovesTest {
         test[7][3] = "";
         test[7][2] = "";
         test[7][1] = "";
-        assertEquals(m.canKingCastleQueenSide("white", test), true);
+        assertEquals(true, m.canKingCastleQueenSide("white", test));
     }
 
     @Test
@@ -288,7 +288,7 @@ public class MovesTest {
         b.returnBoard()[4][2] = "p";
         b.returnBoard()[4][3] = "P";
         b.doMove(m.convertBackFromUCI("d4c3"), this.b.returnBoard());
-        assertEquals(b.returnBoard(), test);
+        assertEquals(test, b.returnBoard());
     }
 
     

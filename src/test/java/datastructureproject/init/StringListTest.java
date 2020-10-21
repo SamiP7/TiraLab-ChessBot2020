@@ -37,7 +37,7 @@ public class StringListTest {
         String s = "sssssss";
         sl.add(s);
 
-        assertEquals(sl.get(0), s);
+        assertEquals(s, sl.get(0));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class StringListTest {
         Collections.sort(testList);
         Collections.sort(ans);
 
-        assertEquals(testList, ans);
+        assertEquals(ans, testList);
     }
 
     @Test
@@ -74,6 +74,6 @@ public class StringListTest {
         String[] ans = new String[1000];
         ans[0] = "ss";
 
-        assertEquals(sl.returnStringList(), ans);
+        assertEquals(ans, sl.returnStringList());
     }
 }
