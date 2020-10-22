@@ -21,7 +21,8 @@
 [Week 6 progress report](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/week%206%20report.md)
 
 
-### Jacoco & Checkstyle
+### Jacoco, Checkstyle & Javadoc
 * These can be found after building the project (guide for that is found from the **early guide for running the bot**).
 * Jacoco can be found here *\build\reports\jacoco\test\html\jacoco-sessions.html*
 * Checkstyle from here *\build\reports\checkstyle\main.html*
+* Javadoc from here *\build\docs\javadoc\*
