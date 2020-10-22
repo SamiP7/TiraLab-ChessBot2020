@@ -20,6 +20,7 @@ Test coverage is not the best as mentioned before and seen from here:
 
 ![](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/movesTest.png)
 
+
 ## MinMax class testing jacoco:
 
 ![](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/algorithmsTest.png)
