@@ -22,5 +22,5 @@ Test coverage is not the best as mentioned before and seen from here:
 
 ## MinMax class testing jacoco:
 
-![]()
+![](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/algorithmsTest.png)
 
