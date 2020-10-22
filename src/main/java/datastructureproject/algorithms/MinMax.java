@@ -203,12 +203,6 @@ public class MinMax {
      */
     private ScoreMove alphaBeta(String[][] tboard, int depth, String side, int alpha, int beta, String move) {
         if (depth <= 0) {
-            if (this.moves.whiteWins()) {
-                return new ScoreMove(999999, "");
-            }
-            if (this.moves.blackWins()) {
-                return new ScoreMove(-999999, "");
-            }
             return new ScoreMove(evaluate(tboard), "");
         } else {
             if (side.equals("white")) {

@@ -17,31 +17,9 @@ public class Moves {
      */
     private GameState gs;
 
-    /**
-     * Used to check if black has no legal moves
-     */
-    boolean whiteWins;
-
-    /**
-     * Used to check if black king is in check
-     */
-    boolean whiteWins2;
-
-    /**
-     * Used to check if white has no legal moves
-     */
-    boolean blackWins;
-
-    /**
-     * Used to check if white is in check
-     */
-    boolean blackWins2;
-
     public Moves(Board board, GameState gs) {
         this.board = board.returnBoard();
         this.gs = gs;
-        whiteWins = false;
-        blackWins = false;
     }
     /**
      * Checks all the possible moves that a knight can make and returns it as an ArrayList
@@ -632,7 +610,6 @@ public class Moves {
                 }
             }
             StringList allMovesIfKingInCheck = new StringList();
-            blackWins2 = true;
             for (int i = 0; i < allMoves.size(); i++) {
                 String temp = convertBackFromUCI(allMoves.get(i));
                 String[] temp2 = temp.split("");
@@ -645,14 +622,8 @@ public class Moves {
                 testBoard[Integer.valueOf(temp2[2])][Integer.valueOf(temp2[3])] = testBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])];
                 testBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = "";
                 if (!isKingInCheck("white", testBoard)) {
-                    blackWins2 = false;
                     allMovesIfKingInCheck.add(allMoves.get(i));
                 }
-            }
-            if (allMovesIfKingInCheck.size() == 0) {
-                blackWins = true;
-            } else {
-                blackWins = false;
             }
             return allMovesIfKingInCheck;
 
@@ -686,7 +657,6 @@ public class Moves {
                 }
             }
             StringList allMovesIfKingInCheck = new StringList();
-            whiteWins2 = true;
             for (int i = 0; i < allMoves.size(); i++) {
                 String temp = convertBackFromUCI(allMoves.get(i));
                 String[] temp2 = temp.split("");
@@ -700,14 +670,7 @@ public class Moves {
                 testBoard[Integer.valueOf(temp2[0])][Integer.valueOf(temp2[1])] = "";
                 if (!isKingInCheck("black", testBoard)) {
                     allMovesIfKingInCheck.add(allMoves.get(i));
-                    whiteWins2 = false;
                 }
-            }
-
-            if (allMovesIfKingInCheck.size() == 0) {
-                whiteWins = true;
-            } else {
-                whiteWins = false;
             }
             return allMovesIfKingInCheck;
         }
@@ -950,30 +913,5 @@ public class Moves {
             }
         }
         return false;
-    }
-
-
-    /**
-     * If white has no possible moves and their king is in check, then black wins. This is checked when generating moves.
-     * @return true if white has no moves, false otherwise
-     */
-    public boolean blackWins() {
-        if (blackWins && blackWins2) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * If black has no possible moves and their king is in check, then white wins. This is checked when generating moves.
-     * @return true if black has no moves, false otherwise
-     */
-    public boolean whiteWins() {
-        if (whiteWins && whiteWins2) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
