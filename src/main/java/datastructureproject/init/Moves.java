@@ -2,6 +2,9 @@ package main.java.datastructureproject.init;
 
 
 import chess.model.Side;
+
+import java.util.Arrays;
+
 import chess.engine.GameState;
 
 public class Moves {
@@ -355,10 +358,10 @@ public class Moves {
                 String see = convertBackFromUCI(gs.getLatestMove());
                 String temp[] = see.split("");
                 if (possibleMoves(sI + 1, sJ + 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ + 1) {
-                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1) + "+"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ + 1) + "+"));
                 }
                 if (possibleMoves(sI + 1, sJ - 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ - 1) {
-                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ - 1) + "+"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI + 1) + String.valueOf(sJ - 1) + "+"));
                 }
             } 
         } else {
@@ -385,10 +388,10 @@ public class Moves {
                 String see = convertBackFromUCI(gs.getLatestMove());
                 String temp[] = see.split("");
                 if (possibleMoves(sI - 1, sJ + 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ + 1) {
-                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ + 1) + "+"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ + 1) + "+"));
                 }
                 if (possibleMoves(sI - 1, sJ - 1, p, tboard) == 0 && Integer.valueOf(temp[2]) == sI && Integer.valueOf(temp[3]) == sJ - 1) {
-                    moves.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 1) + "+"));
+                    movesTemp.add(new String(String.valueOf(sI) + String.valueOf(sJ) + String.valueOf(sI - 1) + String.valueOf(sJ - 1) + "+"));
                 }
             }
         }
@@ -491,7 +494,6 @@ public class Moves {
         if (s.length() > 4) {
             finalUci += temp[4];
         }
-        
         return finalUci;
     }
 
