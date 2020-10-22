@@ -2,7 +2,7 @@
 
 ### Board
 
-Board as the name suggest, gives us the chess board which is represented as a String array. From here we paste the moves on the board which other classes use to check things like moves that they can make, what the opponent can make and so on.
+Board as the name suggest, gives us the chess board which is represented as a String array. From here we paste the moves on the board which other classes use to check things like moves that they can make, what the opponent can make and so on. We can also undo the latest move from here.
 
 ### Bot
 
@@ -13,18 +13,14 @@ This class is used to track the gamestate. Here we paste the opponents moves to 
 Moves class gives all the possible moves that we, and the opponent can do, given our current board position. Here we also *translate* our moves to [UCI](https://en.wikipedia.org/wiki/Universal_Chess_Interface) so that they are valid on the server and also convert them back from UCI so that our board can read them.
 This class also handles all the rules of chess which explains its large size. There's a lot of *"copypaste"* code here but this is rather unavoidable unless we want to give up on the flexibility that the methods here give us. Time complexity shouldn't be more than O(n^2) at max, since it has to check your moves and opponents at the same time to return all valid moves.
 
-### Pieces
-
-Currently quite redundant class so it will most likely be deleted in the future.
-
 ### MinMax
 
-Basic algorithm which tries to maximise our score and drop the opponents as low as possible with the goal of winning the game of course. With its current status, it can comfortably win against level 3 bot, can hold it's own against level 4 but level 5 crushes it.
-Currently it analyzes all the possible moves we can make which are provided by the Moves class and tries to pick the best one with the help of minmaxing and heuristics. Currently it can only reach depth 4 and it's quite slow even then. This is going to be worked on by the help of another algorithm or by trying to make the current implementation more efficient. As of now, I can't even guess the time complexity, especially with pruning, since on every node it has to fetch both your and your opponents moves and already at depth 4, this is already going through hundreds of thousands of nodes. Time could be saved if I implemented move ordering and depending how well that was made, we could go up to depth 6 with more speed than we have now. In consideration though, without any kind of pruning we would have to go through **a^n** nodes where n is depth and a is moves for each node visited. So at depth 4 this can easily go to over a million nodes. Depth might still have to sacrificed in the future for more speed since it quite literally runs at a snail's pace in situations where it's critical to make the absolute best move.
+Basic algorithm which tries to maximise our score and drop the opponents as low as possible with the goal of winning the game of course. It tracks these with the use of heuristics which assign a value for each piece on the board whilst taking into consideration their position as well. Bot does perform quite reasonably given what depth the minimax algorithm can go to. Most of the time it wins against level 3 lichess bot and increasing the algorithms depth, it can even win against level 4.
+Currently it analyzes all the possible moves we can make which are provided by the Moves class and tries to pick the best one with the help of minimaxing and heuristics. The algorithm can only reach depth 4 at a reasonable time, where every move takes about 20-30 seconds. This number can go higher or lower depending on the game situation. Minimax uses alpha-beta pruning and move ordering to help it work faster, but even these can only do so much. On the bright side, these do improve the algorithm's speed by quite a lot, since without these the moves took several minutes even at depth 3. Move ordering is especially useful with pruning since this way we can achieve the alpha-beta cutoff way faster which cut down the time at depth 4 by several minutes. If you are more interest about the performance of this algorithm, I talk more about it in the testing document.
 
 ### Heuristics
 
-Heuristic used by the program have been gained from [here](https://www.chessprogramming.org/Simplified_Evaluation_Function). This basic heuristic provides favored locations for each piece and their values so the bot knows which pieces it should try to capture and how it should try to move. Making a more complicated one is most likely out of my skill range so I'm not attempting to make my own.
+Heuristic used by the program have been gained from [here](https://www.chessprogramming.org/Simplified_Evaluation_Function). This basic heuristic provides favored locations for each piece and their values so the bot knows which pieces it should try to capture and how it should try to move. Move ordering also uses this to sort the moves with a basic insertion sort algorithm working in O(n^2). Making a more complicated heuristic is most likely out of my skill range so I'm not attempting to do that.
 
 ### String list
 
@@ -36,6 +32,13 @@ If you want more info about the classes, check out the javadoc after building th
 
 Other classes are provided from [this](https://github.com/TiraLabra/chess) template. They only handle the communication with the Lichess server and you can find more information about them from the given link.
 
-As said before, code contains a lot of copypaste which could probably be avoided but given how many different moves and situations have to be considered for the bot to work, the current implementation isn't that bad. Reworking it would take far too much time so it'll have to do for now. At least it's quite flexible so making any additions to the program won't suddenly break it. Large classes could be broken down into smaller ones which is an option I will consider in the future.
+As said before, code contains a lot of copypaste which could probably be avoided but given how many different moves and situations have to be considered for the bot to work, the current implementation isn't that bad. Reworking it would take far too much time so it'll have to do for now. At least it's quite flexible so making any additions to the program won't suddenly break it.
 
-Most likely won't go much in depth with O-analysis and etc. but will provide some information about speed and what not where it's necessary.
+The bot could use a null move heuristic or iterative deepening so the minimax could achieve greater depths with better efficiency. Either or both of these could've maybe been achieved if it didn't take me up to week 4 to finally have all the rules ready for the bot but at least I got the minimax with pruning to work reasonably well, which was my initial goal. Many of the bots games result in a draw since it doesn't have anything to check whether it's next move results in a stalemate or in a fivefold repetition. I tried to implement these a few times but sadly, without any success.
+
+### Sources
+https://www.cs.cornell.edu/boom/2004sp/ProjectArch/Chess/algorithms.html
+https://www.naftaliharris.com/blog/chess/
+https://www.chessprogramming.org/Simplified_Evaluation_Function
+https://www.chessprogramming.org/Alpha-Beta
+https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
