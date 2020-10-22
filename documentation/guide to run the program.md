@@ -5,6 +5,8 @@ Now you should be able to try the bot. To do that, go to [lichess](https://liche
 
 You can run the tests seperately with the command `./gradlew test`
 
+If you want to see the bots performance with a greater or a lower minimax depth, you can do this by navigating to **MinMax** class, from there go to method **minMaxMove()** and change the variable **depth** to your desired one.
+
 To close the program use CTRL+C (if you happen to run into any errors, usually just closing the bot and activating it again solves the problem).
 
 Jacoco, Checkstyle and Javadoc can be found in the paths given in the [README](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/README.md)
