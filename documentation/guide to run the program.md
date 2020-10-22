@@ -3,4 +3,8 @@ Then you'll have create your own [personal API access token](https://lichess.org
 
 Now you should be able to try the bot. To do that, go to [lichess](https://lichess.org/), select "**play with computer**", then go to git bash or whatever terminal you're using and navigate to destination where you extracted the file. Type `./gradlew build`, and finally type `./gradlew run --args="--lichess --token=put_token_here"`.
 
-To close the program use CTRL+C.
+You can run the tests seperately with the command `./gradlew test`.
+
+To close the program use CTRL+C (if you happen to run into any errors, usually just closing the bot and activating it again solves the problem).
+
+Jacoco, Checkstyle and Javadoc can be found in the paths given in the [README](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/README.md)
