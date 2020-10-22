@@ -1,30 +1,12 @@
 package test.java.datastructureproject.init;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-
-
 import static org.junit.Assert.*;
-
-
 import java.util.*;
 import main.java.datastructureproject.init.*;
 import chess.engine.*;
-import jdk.jfr.Timestamp;
 import chess.model.Side;
 
 public class MovesTest {
@@ -291,5 +273,24 @@ public class MovesTest {
         assertEquals(test, b.returnBoard());
     }
 
+    @Test
+    public void enPassantIsPossible() {
+        gs.moves.add("d2d4");
+        gs.moves.add("e7e5");
+        gs.moves.add("b1c3");
+        gs.moves.add("e5e4");
+        gs.moves.add("f2f4");
+        b.returnBoard()[4][4] = "P";
+        b.returnBoard()[1][4] = "";
+        b.returnBoard()[7][1] = "";
+        b.returnBoard()[5][2] = "n";
+        b.returnBoard()[6][3] = "";
+        b.returnBoard()[6][5] = "";
+        b.returnBoard()[4][3] = "p";
+        b.returnBoard()[4][5] = "p";
+        StringList possibleMoves = m.pawnMoves(4, 4, "P", b.returnBoard());
+
+        assertEquals(2, possibleMoves.size());
+    }
     
 }

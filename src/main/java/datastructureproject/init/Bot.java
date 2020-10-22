@@ -2,7 +2,7 @@ package main.java.datastructureproject.init;
 
 import chess.engine.*;
 import chess.bot.ChessBot;
-import java.util.*;
+import java.util.Random;
 import main.java.datastructureproject.algorithms.*;
 
 /**
@@ -45,7 +45,6 @@ public class Bot implements ChessBot {
 
         MinMax bestMove = new MinMax(b, gs);
         String move = bestMove.minMaxMove();
-        
 
         //Returns null if no legal moves available, else returns a randomly selected legal move.
         if (move != null && !move.equals("")) {

@@ -1,6 +1,5 @@
 package main.java.datastructureproject.init;
 
-import java.util.*;
 
 public class Board {
 
@@ -41,6 +40,7 @@ public class Board {
     /**
      * Makes a move on the board. If statements are used to check if the move is special, like en passant, castling or promotion.
      * @param move Given an 4 value string consisting of values inbetween 0-7, it uses the first 2 values as
+     * @param board board to play move onto
      * a starting position and the latter ones as the destination
      */
     public void doMove(String move, String[][] board) {

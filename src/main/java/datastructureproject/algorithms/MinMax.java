@@ -1,6 +1,5 @@
 package main.java.datastructureproject.algorithms;
 
-import java.util.*;
 import main.java.datastructureproject.init.*;
 import chess.engine.*;
 import chess.model.Side;
@@ -30,7 +29,7 @@ public class MinMax {
     /**
      * These arrays are used to get an estimation of how beneficial current board positions are
      */
-    private int[][] WhitePawnSquareTable = new int[][] {
+    private int[][] whitePawnSquareTable = new int[][] {
             {0,  0,  0,  0,  0,  0,  0,  0},
             {50, 50, 50, 50, 50, 50, 50, 50},
             {10, 10, 20, 30, 30, 20, 10, 10},
@@ -41,148 +40,148 @@ public class MinMax {
             {0,  0,  0,  0,  0,  0,  0,  0}
         };
 
-        private int[][] BlackPawnSquareTable = new int[][] {
-            {0,  0,  0,  0,  0,  0,  0,  0},
-            {5, 10, 10,-20,-20, 10, 10,  5},
-            {5, -5,-10,  0,  0,-10, -5,  5},
-            {0,  0,  0, 20, 20,  0,  0,  0},
-            {5,  5, 10, 25, 25, 10,  5,  5},
-            {10, 10, 20, 30, 30, 20, 10, 10}, 
-            {50, 50, 50, 50, 50, 50, 50, 50}, 
-            {0,  0,  0,  0,  0,  0,  0,  0}
-        };
+    private int[][] blackPawnSquareTable = new int[][] {
+        {0,  0,  0,  0,  0,  0,  0,  0},
+        {5, 10, 10,-20,-20, 10, 10,  5},
+        {5, -5,-10,  0,  0,-10, -5,  5},
+        {0,  0,  0, 20, 20,  0,  0,  0},
+        {5,  5, 10, 25, 25, 10,  5,  5},
+        {10, 10, 20, 30, 30, 20, 10, 10}, 
+        {50, 50, 50, 50, 50, 50, 50, 50}, 
+        {0,  0,  0,  0,  0,  0,  0,  0}
+    };
 
-        private int[][] WhiteKnightSquareTable = new int[][] {
-            {-50,-40,-30,-30,-30,-30,-40,-50},
-            {-40,-20,  0,  0,  0,  0,-20,-40},
-            {-30,  0, 10, 15, 15, 10,  0,-30},
-            {-30,  5, 15, 20, 20, 15,  5,-30},
-            {-30,  0, 15, 20, 20, 15,  0,-30},
-            {-30,  5, 10, 15, 15, 10,  5,-30},
-            {-40,-20,  0,  5,  5,  0,-20,-40},
-            {-50,-40,-30,-30,-30,-30,-40,-50}
-        };
+    private int[][] whiteKnightSquareTable = new int[][] {
+        {-50,-40,-30,-30,-30,-30,-40,-50},
+        {-40,-20,  0,  0,  0,  0,-20,-40},
+        {-30,  0, 10, 15, 15, 10,  0,-30},
+        {-30,  5, 15, 20, 20, 15,  5,-30},
+        {-30,  0, 15, 20, 20, 15,  0,-30},
+        {-30,  5, 10, 15, 15, 10,  5,-30},
+        {-40,-20,  0,  5,  5,  0,-20,-40},
+        {-50,-40,-30,-30,-30,-30,-40,-50}
+    };
 
-        private int[][] BlackKnightSquareTable = new int[][] {
-            {-50,-40,-30,-30,-30,-30,-40,-50},
-            {-40,-20,  0,  5,  5,  0,-20,-40},
-            {-30,  5, 10, 15, 15, 10,  5,-30},
-            {-30,  0, 15, 20, 20, 15,  0,-30},
-            {-30,  5, 15, 20, 20, 15,  5,-30},
-            {-30,  0, 10, 15, 15, 10,  0,-30},
-            {-40,-20,  0,  0,  0,  0,-20,-40},
-            {-50,-40,-30,-30,-30,-30,-40,-50}
-        };
+    private int[][] blackKnightSquareTable = new int[][] {
+        {-50,-40,-30,-30,-30,-30,-40,-50},
+        {-40,-20,  0,  5,  5,  0,-20,-40},
+        {-30,  5, 10, 15, 15, 10,  5,-30},
+        {-30,  0, 15, 20, 20, 15,  0,-30},
+        {-30,  5, 15, 20, 20, 15,  5,-30},
+        {-30,  0, 10, 15, 15, 10,  0,-30},
+        {-40,-20,  0,  0,  0,  0,-20,-40},
+        {-50,-40,-30,-30,-30,-30,-40,-50}
+    };
 
-        private int[][] WhiteBishopSquareTable = new int[][] {
-            {-20,-10,-10,-10,-10,-10,-10,-20},
-            {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-10,  0,  5, 10, 10,  5,  0,-10},
-            {-10,  5,  5, 10, 10,  5,  5,-10},
-            {-10,  0, 10, 10, 10, 10,  0,-10},
-            {-10, 10, 10, 10, 10, 10, 10,-10},
-            {-10,  5,  0,  0,  0,  0,  5,-10},
-            {-20,-10,-10,-10,-10,-10,-10,-20}
-        };
+    private int[][] whiteBishopSquareTable = new int[][] {
+        {-20,-10,-10,-10,-10,-10,-10,-20},
+        {-10,  0,  0,  0,  0,  0,  0,-10},
+        {-10,  0,  5, 10, 10,  5,  0,-10},
+        {-10,  5,  5, 10, 10,  5,  5,-10},
+        {-10,  0, 10, 10, 10, 10,  0,-10},
+        {-10, 10, 10, 10, 10, 10, 10,-10},
+        {-10,  5,  0,  0,  0,  0,  5,-10},
+        {-20,-10,-10,-10,-10,-10,-10,-20}
+    };
 
-        private int[][] BlackBishopSquareTable = new int[][] {
-            {-20,-10,-10,-10,-10,-10,-10,-20},
-            {-10,  5,  0,  0,  0,  0,  5,-10},
-            {-10, 10, 10, 10, 10, 10, 10,-10},
-            {-10,  0, 10, 10, 10, 10,  0,-10},
-            {-10,  5,  5, 10, 10,  5,  5,-10},
-            {-10,  0,  5, 10, 10,  5,  0,-10},
-            {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-20,-10,-10,-10,-10,-10,-10,-20}
-        };
+    private int[][] blackBishopSquareTable = new int[][] {
+        {-20,-10,-10,-10,-10,-10,-10,-20},
+        {-10,  5,  0,  0,  0,  0,  5,-10},
+        {-10, 10, 10, 10, 10, 10, 10,-10},
+        {-10,  0, 10, 10, 10, 10,  0,-10},
+        {-10,  5,  5, 10, 10,  5,  5,-10},
+        {-10,  0,  5, 10, 10,  5,  0,-10},
+        {-10,  0,  0,  0,  0,  0,  0,-10},
+        {-20,-10,-10,-10,-10,-10,-10,-20}
+    };
 
-        private int[][] WhiteRookSquareTable = new int[][] {
-            {0,  0,  0,  0,  0,  0,  0,  0},
-            {5, 10, 10, 10, 10, 10, 10,  5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {0,  0,  0,  5,  5,  0,  0,  0}
-        };
+    private int[][] whiteRookSquareTable = new int[][] {
+        {0,  0,  0,  0,  0,  0,  0,  0},
+        {5, 10, 10, 10, 10, 10, 10,  5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {0,  0,  0,  5,  5,  0,  0,  0}
+    };
 
-        private int[][] BlackRookSquareTable = new int[][] {
-            {0,  0,  0,  5,  5,  0,  0,  0},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {-5,  0,  0,  0,  0,  0,  0, -5},
-            {5, 10, 10, 10, 10, 10, 10,  5},
-            {0,  0,  0,  0,  0,  0,  0,  0}
-        };
+    private int[][] blackRookSquareTable = new int[][] {
+        {0,  0,  0,  5,  5,  0,  0,  0},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {-5,  0,  0,  0,  0,  0,  0, -5},
+        {5, 10, 10, 10, 10, 10, 10,  5},
+        {0,  0,  0,  0,  0,  0,  0,  0}
+    };
 
-        private int[][] WhiteQueenSquareTable = new int[][] {
-            {-20,-10,-10, -5, -5,-10,-10,-20},
-            {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-10,  0,  5,  5,  5,  5,  0,-10},
-            {-5,  0,  5,  5,  5,  5,  0, -5},
-            { 0,  0,  5,  5,  5,  5,  0, -5},
-            {-10,  5,  5,  5,  5,  5,  0,-10},
-            {-10,  0,  5,  0,  0,  0,  0,-10},
-            {-20,-10,-10, -5, -5,-10,-10,-20}
-        };
+    private int[][] whiteQueenSquareTable = new int[][] {
+        {-20,-10,-10, -5, -5,-10,-10,-20},
+        {-10,  0,  0,  0,  0,  0,  0,-10},
+        {-10,  0,  5,  5,  5,  5,  0,-10},
+        {-5,  0,  5,  5,  5,  5,  0, -5},
+        {0,  0,  5,  5,  5,  5,  0, -5},
+        {-10,  5,  5,  5,  5,  5,  0,-10},
+        {-10,  0,  5,  0,  0,  0,  0,-10},
+        {-20,-10,-10, -5, -5,-10,-10,-20}
+    };
 
-        private int[][] BlackQueenSquareTable = new int[][] {
-            {-20,-10,-10, -5, -5,-10,-10,-20},
-            {-10,  0,  5,  0,  0,  0,  0,-10},
-            {-10,  5,  5,  5,  5,  5,  0,-10},
-            {0,  0,  5,  5,  5,  5,  0, -5},
-            {-5,  0,  5,  5,  5,  5,  0, -5},
-            {-10,  0,  5,  5,  5,  5,  0,-10},
-            {-10,  0,  0,  0,  0,  0,  0,-10},
-            {-20,-10,-10, -5, -5,-10,-10,-20}
-          };
+    private int[][] blackQueenSquareTable = new int[][] {
+        {-20,-10,-10, -5, -5,-10,-10,-20},
+        {-10,  0,  5,  0,  0,  0,  0,-10},
+        {-10,  5,  5,  5,  5,  5,  0,-10},
+        {0,  0,  5,  5,  5,  5,  0, -5},
+        {-5,  0,  5,  5,  5,  5,  0, -5},
+        {-10,  0,  5,  5,  5,  5,  0,-10},
+        {-10,  0,  0,  0,  0,  0,  0,-10},
+        {-20,-10,-10, -5, -5,-10,-10,-20}
+    };
 
-        private int[][] WhiteKingMiddleGameSquareTable = new int[][] {
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-20,-30,-30,-40,-40,-30,-30,-20},
-            {-10,-20,-20,-20,-20,-20,-20,-10},
-            {20, 20,  0,  0,  0,  0, 20, 20},
-            {20, 30, 10,  0,  0, 10, 30, 20}
-        };
+    private int[][] whiteKingMiddleGameSquareTable = new int[][] {
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-20,-30,-30,-40,-40,-30,-30,-20},
+        {-10,-20,-20,-20,-20,-20,-20,-10},
+        {20, 20,  0,  0,  0,  0, 20, 20},
+        {20, 30, 10,  0,  0, 10, 30, 20}
+    };
 
-        private int[][] BlackKingMiddleGameSquareTable = new int[][] {
-            {20, 30, 10,  0,  0, 10, 30, 20},
-            {20, 20,  0,  0,  0,  0, 20, 20},
-            {-10,-20,-20,-20,-20,-20,-20,-10},
-            {-20,-30,-30,-40,-40,-30,-30,-20},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30},
-            {-30,-40,-40,-50,-50,-40,-40,-30}    
-        };
+    private int[][] blackKingMiddleGameSquareTable = new int[][] {
+        {20, 30, 10,  0,  0, 10, 30, 20},
+        {20, 20,  0,  0,  0,  0, 20, 20},
+        {-10,-20,-20,-20,-20,-20,-20,-10},
+        {-20,-30,-30,-40,-40,-30,-30,-20},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30},
+        {-30,-40,-40,-50,-50,-40,-40,-30}    
+    };
 
-        private int[][] WhiteKingEndGameSquareTable = new int[][] {
-            {-50,-40,-30,-20,-20,-30,-40,-50},
-            {-30,-20,-10,  0,  0,-10,-20,-30},
-            {-30,-10, 20, 30, 30, 20,-10,-30},
-            {-30,-10, 30, 40, 40, 30,-10,-30},
-            {-30,-10, 30, 40, 40, 30,-10,-30},
-            {-30,-10, 20, 30, 30, 20,-10,-30},
-            {-30,-30,  0,  0,  0,  0,-30,-30},
-            {-50,-30,-30,-30,-30,-30,-30,-50}
-        };
+    private int[][] whiteKingEndGameSquareTable = new int[][] {
+        {-50,-40,-30,-20,-20,-30,-40,-50},
+        {-30,-20,-10,  0,  0,-10,-20,-30},
+        {-30,-10, 20, 30, 30, 20,-10,-30},
+        {-30,-10, 30, 40, 40, 30,-10,-30},
+        {-30,-10, 30, 40, 40, 30,-10,-30},
+        {-30,-10, 20, 30, 30, 20,-10,-30},
+        {-30,-30,  0,  0,  0,  0,-30,-30},
+        {-50,-30,-30,-30,-30,-30,-30,-50}
+    };
 
-        private int[][] BlackKingEndGameSquareTable = new int[][] {
-            {-50,-30,-30,-30,-30,-30,-30,-50},
-            {-30,-30,  0,  0,  0,  0,-30,-30},
-            {-30,-10, 20, 30, 30, 20,-10,-30},
-            {-30,-10, 30, 40, 40, 30,-10,-30},
-            {-30,-10, 30, 40, 40, 30,-10,-30},
-            {-30,-10, 20, 30, 30, 20,-10,-30},
-            {-30,-20,-10,  0,  0,-10,-20,-30},
-            {-50,-40,-30,-20,-20,-30,-40,-50},
-        };
+    private int[][] blackKingEndGameSquareTable = new int[][] {
+        {-50,-30,-30,-30,-30,-30,-30,-50},
+        {-30,-30,  0,  0,  0,  0,-30,-30},
+        {-30,-10, 20, 30, 30, 20,-10,-30},
+        {-30,-10, 30, 40, 40, 30,-10,-30},
+        {-30,-10, 30, 40, 40, 30,-10,-30},
+        {-30,-10, 20, 30, 30, 20,-10,-30},
+        {-30,-20,-10,  0,  0,-10,-20,-30},
+        {-50,-40,-30,-20,-20,-30,-40,-50},
+    };
 
     public MinMax(Board board, GameState gs) {
         this.board = board.returnBoard();
@@ -204,7 +203,13 @@ public class MinMax {
      */
     private ScoreMove alphaBeta(String[][] tboard, int depth, String side, int alpha, int beta, String move) {
         if (depth <= 0) {
-            return new ScoreMove(evaluate(tboard), new String(""));
+            if (this.moves.whiteWins()) {
+                return new ScoreMove(999999, "");
+            }
+            if (this.moves.blackWins()) {
+                return new ScoreMove(-999999, "");
+            }
+            return new ScoreMove(evaluate(tboard), "");
         } else {
             if (side.equals("white")) {
                 String bestMove = "";
@@ -278,25 +283,21 @@ public class MinMax {
                 tempBoard[i][j] = this.board[i][j];
             }
         }
+        
+        int alpha = Integer.MIN_VALUE;
+        int beta = Integer.MAX_VALUE;
+        int depth = 4;
+
         if (gs.playing == Side.WHITE) {
-            int alpha = Integer.MIN_VALUE;
-            int beta = Integer.MAX_VALUE;
-            
-            ScoreMove sm = alphaBeta(tempBoard, 4, "white", alpha, beta, "");
+            ScoreMove sm = alphaBeta(tempBoard, depth, "white", alpha, beta, "");
             
             return sm.returnMove();
             
-        } else {
-
-            int alpha = Integer.MIN_VALUE;
-            int beta = Integer.MAX_VALUE;          
-
-            ScoreMove sm = alphaBeta(tempBoard, 4, "black", alpha, beta, "");
+        } else {  
+            ScoreMove sm = alphaBeta(tempBoard, depth, "black", alpha, beta, "");
             
             return sm.returnMove();
         }
-        
-        
     }
 
     
@@ -313,48 +314,37 @@ public class MinMax {
                 if (tboard[i][j].equals("k")) {
                     value += 20000;
                     if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
-                        value += (WhiteKingMiddleGameSquareTable[i][j]);
+                        value += (whiteKingMiddleGameSquareTable[i][j]);
                     } else if (gs.getTurnCount() > 28) {
-                        value += (WhiteKingEndGameSquareTable[i][j]);
+                        value += (whiteKingEndGameSquareTable[i][j]);
                     }
-                }
-                else if (tboard[i][j].equals("K")) {
+                } else if (tboard[i][j].equals("K")) {
                     value -= 20000;
                     if (gs.getTurnCount() > 12 && gs.getTurnCount() <= 28) {
-                        value -= (BlackKingMiddleGameSquareTable[i][j]);
+                        value -= (blackKingMiddleGameSquareTable[i][j]);
                     } else if (gs.getTurnCount() > 28) {
-                        value -= (BlackKingEndGameSquareTable[i][j]);
+                        value -= (blackKingEndGameSquareTable[i][j]);
                     }
-                }
-                else if (tboard[i][j].equals("q")) {
-                    value += 900 + (WhiteQueenSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("Q")) {
-                    value -= 900 - (BlackQueenSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("n")) {
-                    value += 320 + (WhiteKnightSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("N")) {
-                    value -= 320 - (BlackKnightSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("b")) {
-                    value += 330 + (WhiteBishopSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("B")) {
-                    value -= 330 - (BlackBishopSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("r")) {
-                    value += 500 + (WhiteRookSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("R")) {
-                    value -= 500 - (BlackRookSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("p")) {
-                    value += 100 + (WhitePawnSquareTable[i][j]);
-                }
-                else if (tboard[i][j].equals("P")) {
-                    value -= 100 - (BlackPawnSquareTable[i][j]);
+                } else if (tboard[i][j].equals("q")) {
+                    value += 900 + (whiteQueenSquareTable[i][j]);
+                } else if (tboard[i][j].equals("Q")) {
+                    value -= 900 - (blackQueenSquareTable[i][j]);
+                } else if (tboard[i][j].equals("n")) {
+                    value += 320 + (whiteKnightSquareTable[i][j]);
+                } else if (tboard[i][j].equals("N")) {
+                    value -= 320 - (blackKnightSquareTable[i][j]);
+                } else if (tboard[i][j].equals("b")) {
+                    value += 330 + (whiteBishopSquareTable[i][j]);
+                } else if (tboard[i][j].equals("B")) {
+                    value -= 330 - (blackBishopSquareTable[i][j]);
+                } else if (tboard[i][j].equals("r")) {
+                    value += 500 + (whiteRookSquareTable[i][j]);
+                } else if (tboard[i][j].equals("R")) {
+                    value -= 500 - (blackRookSquareTable[i][j]);
+                } else if (tboard[i][j].equals("p")) {
+                    value += 100 + (whitePawnSquareTable[i][j]);
+                } else if (tboard[i][j].equals("P")) {
+                    value -= 100 - (blackPawnSquareTable[i][j]);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package main.java.datastructureproject.init;
 
+
 public class StringList {
 
     private String[] list;
