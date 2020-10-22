@@ -1,7 +1,7 @@
 ### Documentation
 [Requirement specification](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/requirement%20specification.md)
 
-[Early guide for running the bot](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/guide%20to%20run%20the%20program.md)
+[Guide for running the bot](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/guide%20to%20run%20the%20program.md)
 
 [Project structure](https://github.com/SamiP7/TiraLab-ChessBot2020/blob/master/documentation/structure.md)
 
@@ -22,7 +22,7 @@
 
 
 ### Jacoco, Checkstyle & Javadoc
-* These can be found after building the project (guide for that is found from the **early guide for running the bot**).
+* These can be found after building the project (guide for that is found from the **Guide for running the bot**).
 * Jacoco can be found here *\build\reports\jacoco\test\html\jacoco-sessions.html*
 * Checkstyle from here *\build\reports\checkstyle\main.html*
 * Javadoc from here *\build\docs\javadoc*
