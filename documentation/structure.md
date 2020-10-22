@@ -37,8 +37,13 @@ As said before, code contains a lot of copypaste which could probably be avoided
 The bot could use a null move heuristic or iterative deepening so the minimax could achieve greater depths with better efficiency. Either or both of these could've maybe been achieved if it didn't take me up to week 4 to finally have all the rules ready for the bot but at least I got the minimax with pruning to work reasonably well, which was my initial goal. Many of the bots games result in a draw since it doesn't have anything to check whether it's next move results in a stalemate or in a fivefold repetition. I tried to implement these a few times but sadly, without any success.
 
 ### Sources
+
 https://www.cs.cornell.edu/boom/2004sp/ProjectArch/Chess/algorithms.html
+
 https://www.naftaliharris.com/blog/chess/
+
 https://www.chessprogramming.org/Simplified_Evaluation_Function
+
 https://www.chessprogramming.org/Alpha-Beta
+
 https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
